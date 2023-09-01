@@ -1,1 +1,1 @@
-export { default } from "./ReposTable";
+export { default } from './ReposTable';

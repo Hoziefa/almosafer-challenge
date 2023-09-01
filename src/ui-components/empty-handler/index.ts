@@ -1,1 +1,1 @@
-export { default } from "./EmptyHandler";
+export { default } from './EmptyHandler';

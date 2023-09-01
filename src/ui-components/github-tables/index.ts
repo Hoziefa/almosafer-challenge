@@ -1,1 +1,1 @@
-export { default } from "./GithubTables";
+export { default } from './GithubTables';

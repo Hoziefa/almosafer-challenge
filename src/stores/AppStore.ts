@@ -1,11 +1,11 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable } from 'mobx';
 
 export default class AppStore {
   showSnackbar = false;
 
   duration?: number = 2000;
 
-  message = "";
+  message = '';
 
   constructor() {
     makeAutoObservable(this);

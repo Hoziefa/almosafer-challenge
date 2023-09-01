@@ -5,7 +5,7 @@ export type License = {
   spdx_id: string;
   node_id: string;
   html_url: string;
-}
+};
 
 export type Owner = {
   login: string;
@@ -26,7 +26,7 @@ export type Owner = {
   repos_url: string;
   events_url: string;
   site_admin: boolean;
-}
+};
 
 export type Repository = {
   id: number;
@@ -109,4 +109,4 @@ export type Repository = {
   watchers: number;
   default_branch: string;
   score: number;
-}
+};

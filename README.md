@@ -11,6 +11,7 @@ This project was built with Next, React and Typescript following the web standar
 ## Getting Started
 
 #### 1. Clone the repo
+
 `git clone https://github.com/Hoziefa/almosafer-challenge.git`
 
 #### 2. Install dependencies

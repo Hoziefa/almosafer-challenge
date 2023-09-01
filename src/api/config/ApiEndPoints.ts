@@ -1,4 +1,4 @@
 export const ApiEndPoints = {
-  githubUsers: "/search/users",
-  githubRepositories: "/search/repositories",
+  githubUsers: '/search/users',
+  githubRepositories: '/search/repositories',
 };

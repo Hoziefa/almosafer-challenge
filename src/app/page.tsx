@@ -1,4 +1,4 @@
-import GithubTables from "@components/github-tables";
+import GithubTables from '@components/github-tables';
 
 export default function Home() {
   return (

@@ -11,21 +11,31 @@ type UseDataTableInfinitePagination = {
   globalFilter: string;
 };
 
-export const useDataTableInfiniteScroll = (props: UseDataTableInfinitePagination) => {
-  const onInfinitePagination = useCallback((containerRef?: HTMLDivElement | null) => {
-    if (!containerRef) return;
+export const useDataTableInfiniteScroll = (
+  props: UseDataTableInfinitePagination,
+) => {
+  const onInfinitePagination = useCallback(
+    (containerRef?: HTMLDivElement | null) => {
+      if (!containerRef) return;
 
-    const { scrollHeight, scrollTop, clientHeight } = containerRef;
+      const { scrollHeight, scrollTop, clientHeight } = containerRef;
 
-    if (
-      scrollTop >= (scrollHeight - clientHeight) &&
-      !props.isFetching &&
-      !props.isFetchingNextPage &&
-      props.hasNextPage
-    ) {
-      props.fetchNextPage();
-    }
-  }, [props.isFetching, props.isFetchingNextPage, props.hasNextPage, props.fetchNextPage]);
+      if (
+        scrollTop >= scrollHeight - clientHeight &&
+        !props.isFetching &&
+        !props.isFetchingNextPage &&
+        props.hasNextPage
+      ) {
+        props.fetchNextPage();
+      }
+    },
+    [
+      props.isFetching,
+      props.isFetchingNextPage,
+      props.hasNextPage,
+      props.fetchNextPage,
+    ],
+  );
 
   // Scroll to the top when entering a query
   useEffect(() => {

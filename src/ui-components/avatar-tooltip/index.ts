@@ -1,1 +1,1 @@
-export { default } from "./AvatarTooltip";
+export { default } from './AvatarTooltip';

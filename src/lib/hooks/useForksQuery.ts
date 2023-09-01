@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { ReposHandler } from "@api/handlers/repos";
+import { useQuery } from '@tanstack/react-query';
+import { ReposHandler } from '@api/handlers/repos';
 
 export const useForksQuery = (url: string) => {
   const forksQuery = useQuery({

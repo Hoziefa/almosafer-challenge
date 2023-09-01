@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
-import AppStore from "./AppStore";
+import { createContext, useContext } from 'react';
+import AppStore from './AppStore';
 
 type Store = {
   appStore: AppStore;
