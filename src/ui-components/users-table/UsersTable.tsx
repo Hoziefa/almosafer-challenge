@@ -9,7 +9,7 @@ import { Launch } from '@mui/icons-material';
 import EmptyHandler from '@components/empty-handler';
 
 import { observer } from 'mobx-react-lite';
-import { useDataTableInfiniteScroll } from '@hooks/useDataTableInfinitePagination';
+import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 
 import type { User } from '@app-types';
 

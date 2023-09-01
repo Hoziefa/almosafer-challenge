@@ -13,25 +13,29 @@ type RepoForksProps = {
   url: string;
 };
 
+function AvatarSkeleton() {
+  return (
+    <AvatarGroup>
+      <Skeleton variant='circular'>
+        <Avatar />
+      </Skeleton>
+
+      <Skeleton variant='circular'>
+        <Avatar />
+      </Skeleton>
+
+      <Skeleton variant='circular'>
+        <Avatar />
+      </Skeleton>
+    </AvatarGroup>
+  );
+}
+
 function RepoForks(props: RepoForksProps) {
   const { data, isLoading } = useForksQuery(props.url);
 
   if (isLoading) {
-    return (
-      <AvatarGroup>
-        <Skeleton variant='circular'>
-          <Avatar />
-        </Skeleton>
-
-        <Skeleton variant='circular'>
-          <Avatar />
-        </Skeleton>
-
-        <Skeleton variant='circular'>
-          <Avatar />
-        </Skeleton>
-      </AvatarGroup>
-    );
+    return <AvatarSkeleton />;
   }
 
   return (

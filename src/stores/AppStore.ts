@@ -1,23 +1,21 @@
 import { makeAutoObservable } from 'mobx';
 
 export default class AppStore {
-  showSnackbar = false;
+  public showSnackbar = false;
+  public duration?: number = 2000;
+  public message = '';
 
-  duration?: number = 2000;
-
-  message = '';
-
-  constructor() {
+  public constructor() {
     makeAutoObservable(this);
   }
 
-  onOpen = (message: string, duration?: number) => {
+  public onOpen = (message: string, duration?: number): void => {
     this.showSnackbar = true;
     this.message = message;
-    this.duration ??= duration;
+    this.duration = duration;
   };
 
-  onClose = () => {
+  public onClose = (): void => {
     this.showSnackbar = false;
   };
 }

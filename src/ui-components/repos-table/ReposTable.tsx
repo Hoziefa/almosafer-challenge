@@ -8,7 +8,7 @@ import EmptyHandler from '../empty-handler';
 import AvatarTooltip from '@components/avatar-tooltip';
 import RepoForks from '../repo-forks';
 
-import { useDataTableInfiniteScroll } from '@hooks/useDataTableInfinitePagination';
+import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 import { useReposQuery } from '@hooks/useReposQuery';
 import { observer } from 'mobx-react-lite';
 

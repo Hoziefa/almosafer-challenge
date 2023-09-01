@@ -2,7 +2,7 @@
 
 import { RefObject, useCallback, useEffect } from "react";
 
-type UseDataTableInfinitePagination = {
+type UseTableInfinitePagination = {
   isFetching: boolean;
   isFetchingNextPage: boolean;
   hasNextPage?: boolean;
@@ -12,7 +12,7 @@ type UseDataTableInfinitePagination = {
 };
 
 export const useDataTableInfiniteScroll = (
-  props: UseDataTableInfinitePagination,
+  props: UseTableInfinitePagination,
 ) => {
   const onInfinitePagination = useCallback(
     (containerRef?: HTMLDivElement | null) => {
