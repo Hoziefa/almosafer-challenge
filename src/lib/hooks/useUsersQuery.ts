@@ -1,7 +1,8 @@
 import { usePaginatedTableQuery } from '@hooks/usePaginatedTableQuery';
 import { UsersHandler } from '@api/handlers';
-import type { User } from '@app-types';
 import { store } from '@stores/store';
+
+import type { User } from '@app-types';
 
 export const useUsersQuery = () => {
   const paginatedDataTableQuery = usePaginatedTableQuery<User>({
