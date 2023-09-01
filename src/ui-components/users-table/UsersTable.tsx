@@ -6,6 +6,7 @@ import { useUsersQuery } from "@hooks/useUsersQuery";
 import { Avatar } from "@mui/material";
 import { Launch } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
+import ErrorHandler from "@components/error-handler";
 
 import type { User } from "@app-types";
 
@@ -22,6 +23,7 @@ function UsersTable() {
     globalFilter,
     isFetchingNextPage,
     hasNextPage,
+    isError,
   } = useUsersQuery();
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -112,28 +114,35 @@ function UsersTable() {
   }, [globalFilter, isFetching, isLoading, sorting]);
 
   return (
-    <MaterialReactTable
-      columns={ columns }
-      data={ data }
-      rowCount={ rowCount }
-      onSortingChange={ setSorting }
-      onGlobalFilterChange={ setGlobalFilter }
-      enableGlobalFilter
-      positionGlobalFilter="left"
-      enableFilterMatchHighlighting={ false }
-      enablePagination={ false }
-      enableFullScreenToggle={ false }
-      enableDensityToggle={ false }
-      enableHiding={ false }
-      enableFilters={ false }
-      enableColumnActions={ false }
-      enableBottomToolbar={ false }
-      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
-      manualFiltering
-      manualSorting
-      muiTableContainerProps={ containerProps }
-      state={ tableState }
-    />
+    <>
+      <MaterialReactTable
+        columns={ columns }
+        data={ data }
+        rowCount={ rowCount }
+        onSortingChange={ setSorting }
+        onGlobalFilterChange={ setGlobalFilter }
+        enableGlobalFilter
+        positionGlobalFilter="left"
+        enableFilterMatchHighlighting={ false }
+        enablePagination={ false }
+        enableFullScreenToggle={ false }
+        enableDensityToggle={ false }
+        enableHiding={ false }
+        enableFilters={ false }
+        enableColumnActions={ false }
+        enableBottomToolbar={ false }
+        muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
+        manualFiltering
+        manualSorting
+        muiTableContainerProps={ containerProps }
+        state={ tableState }
+      />
+
+      <ErrorHandler
+        isOpen={ isError }
+        message="An error occurred please try again later."
+      />
+    </>
   );
 }
 
