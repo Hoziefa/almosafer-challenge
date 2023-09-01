@@ -1,6 +1,6 @@
 import React from "react";
 import { useForksQuery } from "@hooks/useForksQuery";
-import { Avatar, AvatarGroup, Link, Skeleton, Stack } from "@mui/material";
+import { Alert, Avatar, AvatarGroup, Link, Skeleton, Stack } from "@mui/material";
 
 type ForksProps = {
   url: string;
@@ -30,9 +30,11 @@ function Forks(props: ForksProps) {
   return (
     <Stack direction="row" gap={ 2 }>
       <AvatarGroup>
-        { data?.slice(0, 3)?.map(({ owner }) => (
+        { data!.length === 0 && <Alert severity="error" color="warning">No forks found!</Alert> }
+
+        { data!.slice(0, 3)?.map(({ owner, full_name }) => (
           <Link key={ owner.id } href={ owner.html_url }>
-            <Avatar src={ owner.avatar_url } sx={ { borderColor: "black" } } />
+            <Avatar src={ owner.avatar_url } sx={ { borderColor: "black" } } title={ full_name } />
           </Link>
         )) }
       </AvatarGroup>
