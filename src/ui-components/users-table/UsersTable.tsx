@@ -61,7 +61,7 @@ function UsersTable() {
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            <Typography variant="h6">{ row.original.login }</Typography>
+            <Typography variant="body1">{ row.original.login }</Typography>
           );
         },
       },

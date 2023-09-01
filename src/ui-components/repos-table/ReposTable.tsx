@@ -3,14 +3,15 @@
 import React, { UIEvent, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 
-import { Box, Chip, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Typography } from "@mui/material";
 import EmptyData from "@components/empty-data";
 import AvatarTooltip from "@components/avatar-tooltip";
 import Forks from "@components/forks";
 
+import { useDataTableInfiniteScroll } from "@hooks/useDataTableInfinitePagination";
 import { useReposQuery } from "@hooks/useReposQuery";
 import { observer } from "mobx-react-lite";
-import { useDataTableInfiniteScroll } from "@hooks/useDataTableInfinitePagination";
+
 import type { Repository } from "@app-types";
 
 function ReposTable() {
@@ -44,13 +45,24 @@ function ReposTable() {
         },
       },
       {
+        header: "Avatar",
+        accessorKey: "owner.avatar_url",
+        enableColumnFilterModes: false,
+        enableColumnFilter: false,
+        Cell: ({ row }) => {
+          return (
+            <Avatar src={ row.original.owner.avatar_url } sx={ { width: "60px", height: "60px" } } />
+          );
+        },
+      },
+      {
         header: "Name",
         accessorKey: "full_name",
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            <Typography variant="h6">{ row.original.full_name }</Typography>
+            <Typography variant="body1">{ row.original.full_name }</Typography>
           );
         },
       },
@@ -123,8 +135,8 @@ function ReposTable() {
       enableColumnActions={ false }
       enableBottomToolbar={ false }
       enableSorting={ false }
-      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
-      renderEmptyRowsFallback={ () => <EmptyData message="No data found!" /> }
+      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "460px" } } }
+      renderEmptyRowsFallback={ () => <EmptyData message="Oops! Not Found" /> }
     />
   );
 }

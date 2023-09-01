@@ -16,7 +16,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 function AvatarTooltip(props: React.PropsWithChildren) {
   return (
-    <HtmlTooltip title={ props.children }>
+    <HtmlTooltip title={ props.children } leaveDelay={ 250 }>
       <Avatar src="" />
     </HtmlTooltip>
   );
