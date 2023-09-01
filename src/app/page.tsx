@@ -1,9 +1,9 @@
-import UsersTable from "@components/users-table";
+import GithubTables from "@components/github-tables";
 
 export default function Home() {
   return (
     <main>
-      <UsersTable />
+      <GithubTables />
     </main>
   );
 }

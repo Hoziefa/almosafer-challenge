@@ -109,4 +109,5 @@ export type Repository = {
   watchers: number;
   default_branch: string;
   score: number;
+  forksList: Repository[];
 }

@@ -1,10 +1,15 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { UIEvent, useCallback, useEffect, useMemo, useRef } from "react";
+import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, MenuItem, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Typography } from "@mui/material";
+
+import ErrorHandler from "@components/error-handler";
+import EmptyData from "@components/empty-data";
 
 import { useReposQuery } from "@hooks/useReposQuery";
+import type { Repository } from "@app-types";
 
 function ReposTable() {
   const {
@@ -20,9 +25,51 @@ function ReposTable() {
     isError,
   } = useReposQuery();
 
-  const [query, setQuery] = useState("");
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
-  const tableContainerRef = useRef<HTMLUListElement>(null);
+  const columns: Array<MRT_ColumnDef<Repository>> = useMemo(() => {
+    return [
+      {
+        header: "#",
+        accessorKey: "id",
+        enableColumnFilterModes: false,
+        enableColumnFilter: false,
+        Cell: ({ row }) => {
+          return (
+            <Typography variant="body1">{ row.original.id }</Typography>
+          );
+        },
+      },
+      {
+        header: "Forks",
+        accessorKey: "forksList",
+        enableColumnFilterModes: false,
+        enableColumnFilter: false,
+        Cell: ({ row }) => {
+          return (
+            row.original.forksList?.map(({ owner }) => (
+              <Avatar key={ owner.id } src={ owner?.avatar_url } sx={ { width: "35px", height: "35px" } } />
+            ))
+          );
+        },
+      },
+      {
+        header: "Topics",
+        accessorKey: "topics",
+        enableColumnFilterModes: false,
+        enableColumnFilter: false,
+        Cell: ({ row }) => {
+          return (
+            <Box display="flex" flexWrap="wrap" gap="0.3rem">
+              { row.original.topics.slice(0, 5).map(((topic) => (
+                <Chip label={ topic } color="info" key={ topic } size="medium" sx={ { fontSize: "0.9rem" } } />
+              ))) }
+            </Box>
+          );
+        },
+      },
+    ];
+  }, []);
 
   const onInfinitePagination = useCallback((containerRefElement?: HTMLDivElement | null) => {
     if (!containerRefElement) return;
@@ -39,6 +86,23 @@ function ReposTable() {
     }
   }, [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]);
 
+  const containerProps = useMemo(() => {
+    return {
+      ref: tableContainerRef,
+      sx: { maxHeight: "72dvh" },
+      onScroll: (event: UIEvent<HTMLDivElement>) => onInfinitePagination(event.target as HTMLDivElement),
+    };
+  }, [onInfinitePagination]);
+
+  const tableState = useMemo(() => {
+    return {
+      isLoading,
+      globalFilter,
+      showProgressBars: isFetching,
+      showGlobalFilter: true,
+    };
+  }, [globalFilter, isFetching, isLoading]);
+
   // Scroll to the top when entering a query
   useEffect(() => {
     tableContainerRef.current?.scrollTo({ top: 0 });
@@ -46,38 +110,34 @@ function ReposTable() {
 
   return (
     <>
-      <Box display="flex" justifyContent="space-between" gap="2rem" mb={ 4 }>
-        <TextField id="outlined-basic" label="Search for..." variant="outlined" sx={ { flex: "2" } } size="small" value={ query } onChange={ (event) => setQuery(event.target.value) } />
+      <MaterialReactTable
+        columns={ columns }
+        data={ data }
+        rowCount={ rowCount }
+        state={ tableState }
+        onGlobalFilterChange={ setGlobalFilter }
+        muiTableContainerProps={ containerProps }
+        positionGlobalFilter="left"
+        enableGlobalFilter
+        manualFiltering
+        manualSorting
+        enableFilterMatchHighlighting={ false }
+        enablePagination={ false }
+        enableFullScreenToggle={ false }
+        enableDensityToggle={ false }
+        enableHiding={ false }
+        enableFilters={ false }
+        enableColumnActions={ false }
+        enableBottomToolbar={ false }
+        enableSorting={ false }
+        muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
+        renderEmptyRowsFallback={ () => <EmptyData message="No data found!" /> }
+      />
 
-        <TextField
-          select
-          id="outlined-select-currency"
-          label="Select a type"
-          defaultValue="users"
-          sx={ { flex: "1" } }
-          size="small"
-        >
-          { [{ label: "users", value: "users" }, { label: "repositories", value: "repositories" }].map((option) => (
-            <MenuItem key={ option.value } value={ option.value }>
-              { option.label }
-            </MenuItem>
-          )) }
-        </TextField>
-      </Box>
-
-      <List sx={ { width: "100%", mx: "auto", height: "700px", overflowY: "scroll" } } ref={ tableContainerRef } onScroll={ (event) => onInfinitePagination(event.target as HTMLDivElement) }>
-        { data.map(({ full_name, owner }) => (
-          <React.Fragment key={ full_name }>
-            <ListItem alignItems="center">
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src={ owner?.avatar_url } sx={ { width: "60px", height: "60px", mr: "1rem" } } />
-              </ListItemAvatar>
-
-              <ListItemText primary={ <Typography variant="h6">{ full_name }</Typography> } />
-            </ListItem>
-          </React.Fragment>
-        )) }
-      </List>
+      <ErrorHandler
+        isOpen={ isError }
+        message="An error occurred please try again later."
+      />
     </>
   );
 }
