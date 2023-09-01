@@ -1,10 +1,10 @@
 'use client';
 
 import React, { UIEvent, useMemo, useRef } from 'react';
-import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
+import { type MRT_ColumnDef } from 'material-react-table';
 
 import { Avatar, Box, Chip, Typography } from '@mui/material';
-import EmptyHandler from '../empty-handler';
+import CommonTableRender from '../common-table-render';
 import AvatarTooltip from '@components/avatar-tooltip';
 import RepoForks from '../repo-forks';
 
@@ -13,10 +13,9 @@ import { useReposQuery } from '@hooks/useReposQuery';
 import { observer } from 'mobx-react-lite';
 
 import type { Repository } from '@app-types';
+import { User } from '@app-types';
 
 function ReposTable() {
-  const tableContainerRef = useRef<HTMLDivElement>(null);
-
   const {
     data,
     rowCount,
@@ -28,6 +27,8 @@ function ReposTable() {
     isFetchingNextPage,
     hasNextPage,
   } = useReposQuery();
+
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const { onInfinitePagination } = useDataTableInfiniteScroll({
     containerRef: tableContainerRef,
@@ -130,35 +131,13 @@ function ReposTable() {
   }, [globalFilter, isFetching, isLoading]);
 
   return (
-    <MaterialReactTable
-      columns={columns}
-      data={data}
+    <CommonTableRender
+      columns={columns as MRT_ColumnDef<User | Repository>[]}
+      data={data as Repository[]}
       rowCount={rowCount}
       state={tableState}
       onGlobalFilterChange={setGlobalFilter}
       muiTableContainerProps={containerProps}
-      positionGlobalFilter='left'
-      enableGlobalFilter
-      manualFiltering
-      manualSorting
-      enableFilterMatchHighlighting={false}
-      enablePagination={false}
-      enableFullScreenToggle={false}
-      enableDensityToggle={false}
-      enableHiding={false}
-      enableFilters={false}
-      enableColumnActions={false}
-      enableBottomToolbar={false}
-      enableSorting={false}
-      muiSearchTextFieldProps={{
-        color: 'info',
-        variant: 'outlined',
-        fullWidth: true,
-        size: 'small',
-        margin: 'dense',
-        sx: { maxWidth: '460px' },
-      }}
-      renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />
   );
 }
