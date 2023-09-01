@@ -156,7 +156,7 @@ function ReposTable() {
         fullWidth: true,
         size: 'small',
         margin: 'dense',
-        sx: { width: '460px' },
+        sx: { maxWidth: '460px' },
       }}
       renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />

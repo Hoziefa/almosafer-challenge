@@ -133,7 +133,7 @@ function UsersTable() {
         fullWidth: true,
         size: 'small',
         margin: 'dense',
-        sx: { minWidth: '460px' },
+        sx: { maxWidth: '460px' },
       }}
       renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />
