@@ -21,17 +21,15 @@ const PER_PAGE = 10;
 
 export function usePaginatedTableQuery<T extends Record<string, any>>(props: QueryProps<T>) {
   const [globalFilter, setGlobalFilter] = useState<string>("");
-  const [sorting, setSorting] = useState<MRT_SortingState>(props.initialSorting ?? []);
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
-    [props.queryKey, sorting, globalFilter],
+    [props.queryKey, globalFilter],
     async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
 
       searchParams.set("page", (pageParam * PER_PAGE).toString());
       searchParams.set("per_page", PER_PAGE.toString());
       searchParams.set("q", globalFilter || "Q");
-      searchParams.set("order", sorting[0]?.desc ? "desc" : "asc");
 
       return await props.queryFn(searchParams);
     },
@@ -47,8 +45,6 @@ export function usePaginatedTableQuery<T extends Record<string, any>>(props: Que
     data: dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [],
     rowCount: dataTableQuery.data?.pages[0].total_count ?? 0,
     globalFilter,
-    sorting,
     setGlobalFilter,
-    setSorting,
   };
 }

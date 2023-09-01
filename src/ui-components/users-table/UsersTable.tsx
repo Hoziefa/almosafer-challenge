@@ -19,8 +19,6 @@ function UsersTable() {
     rowCount,
     isLoading,
     isFetching,
-    setSorting,
-    sorting,
     fetchNextPage,
     setGlobalFilter,
     globalFilter,
@@ -110,11 +108,10 @@ function UsersTable() {
     return {
       isLoading,
       globalFilter,
-      sorting,
       showProgressBars: isFetching,
       showGlobalFilter: true,
     };
-  }, [globalFilter, isFetching, isLoading, sorting]);
+  }, [globalFilter, isFetching, isLoading]);
 
   // Scroll to the top when entering a query
   useEffect(() => {
@@ -128,7 +125,6 @@ function UsersTable() {
         data={ data }
         rowCount={ rowCount }
         state={ tableState }
-        onSortingChange={ setSorting }
         onGlobalFilterChange={ setGlobalFilter }
         muiTableContainerProps={ containerProps }
         positionGlobalFilter="left"
