@@ -3,7 +3,9 @@ import { styled } from "@mui/material/styles";
 import { Avatar, Tooltip, tooltipClasses, TooltipProps } from "@mui/material";
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip { ...props } classes={ { popper: className } } />
+  <Tooltip { ...props } classes={ { popper: className } }>
+    { props.children }
+  </Tooltip>
 ))(({ theme }) => ({
   [`& .${ tooltipClasses.tooltip }`]: {
     backgroundColor: theme.palette.background.paper,
