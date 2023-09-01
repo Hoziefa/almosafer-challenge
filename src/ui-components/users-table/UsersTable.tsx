@@ -84,7 +84,7 @@ function UsersTable() {
     const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
 
     if (
-      scrollHeight - scrollTop - clientHeight < 300 &&
+      scrollTop >= (scrollHeight - clientHeight) &&
       !isFetching &&
       !isFetchingNextPage &&
       hasNextPage
