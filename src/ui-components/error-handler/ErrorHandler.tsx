@@ -9,7 +9,7 @@ type ErrorHandlerProps = {
 
 function ErrorHandler(props: ErrorHandlerProps) {
   return (
-    <Snackbar open={ props.isOpen } autoHideDuration={ props.duration ?? 2000 } anchorOrigin={ { vertical: "bottom", horizontal: "left" } }>
+    <Snackbar open={ props.isOpen } autoHideDuration={ props.duration ?? 2000 } anchorOrigin={ { vertical: "bottom", horizontal: "center" } }>
       <Alert severity="error" sx={ { width: "100%" } }>
         { props.message }
       </Alert>

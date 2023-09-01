@@ -142,10 +142,12 @@ function UsersTable() {
         renderEmptyRowsFallback={ () => <EmptyData message="No data found!" /> }
       />
 
-      <ErrorHandler
-        isOpen={ isError }
-        message="An error occurred please try again later."
-      />
+      { isError && (
+        <ErrorHandler
+          isOpen={ isError }
+          message="An error occurred please try again later."
+        />
+      ) }
     </>
   );
 }
