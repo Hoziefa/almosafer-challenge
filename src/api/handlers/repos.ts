@@ -1,7 +1,7 @@
 import { ApiEndPoints, httpClient } from "@api/config";
 import type { Repository, Result } from "@app-types";
 
-const URL = ApiEndPoints.githubUsers;
+const URL = ApiEndPoints.githubRepositories;
 
 async function getRepos(queryParams: string) {
   return await httpClient.get<Result<Repository>>(`${ URL }?${ queryParams }`);

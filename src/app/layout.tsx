@@ -33,7 +33,7 @@ export default function RootLayout({
             </Toolbar>
           </AppBar>
 
-          <Container sx={ { my: "5rem" } } maxWidth="xl">
+          <Container sx={ { my: "5rem" } }>
             { children }
           </Container>
         </QueryClientProvider>
