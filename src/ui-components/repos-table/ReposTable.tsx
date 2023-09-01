@@ -3,13 +3,15 @@
 import React, { UIEvent, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 
-import { Avatar, Box, Chip, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import EmptyData from "@components/empty-data";
+import AvatarTooltip from "@components/avatar-tooltip";
+import Forks from "@components/forks";
 
 import { useReposQuery } from "@hooks/useReposQuery";
-import type { Repository } from "@app-types";
 import { observer } from "mobx-react-lite";
 import { useDataTableInfiniteScroll } from "@hooks/useDataTableInfinitePagination";
+import type { Repository } from "@app-types";
 
 function ReposTable() {
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -59,9 +61,9 @@ function ReposTable() {
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            row.original.forksList?.map(({ owner }) => (
-              <Avatar key={ owner.id } src={ owner?.avatar_url } sx={ { width: "35px", height: "35px" } } />
-            ))
+            <AvatarTooltip>
+              <Forks url={ row.original.forks_url } />
+            </AvatarTooltip>
           );
         },
       },
