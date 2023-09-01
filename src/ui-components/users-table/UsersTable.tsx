@@ -1,6 +1,6 @@
 "use client";
 
-import React, { UIEvent, useCallback, useMemo, useRef } from "react";
+import React, { UIEvent, useCallback, useEffect, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import { useUsersQuery } from "@hooks/useUsersQuery";
 
@@ -116,16 +116,25 @@ function UsersTable() {
     };
   }, [globalFilter, isFetching, isLoading, sorting]);
 
+  // Scroll to the top when entering a query
+  useEffect(() => {
+    tableContainerRef.current?.scrollTo({ top: 0 });
+  }, [globalFilter]);
+
   return (
     <>
       <MaterialReactTable
         columns={ columns }
         data={ data }
         rowCount={ rowCount }
+        state={ tableState }
         onSortingChange={ setSorting }
         onGlobalFilterChange={ setGlobalFilter }
-        enableGlobalFilter
+        muiTableContainerProps={ containerProps }
         positionGlobalFilter="left"
+        enableGlobalFilter
+        manualFiltering
+        manualSorting
         enableFilterMatchHighlighting={ false }
         enablePagination={ false }
         enableFullScreenToggle={ false }
@@ -134,11 +143,8 @@ function UsersTable() {
         enableFilters={ false }
         enableColumnActions={ false }
         enableBottomToolbar={ false }
+        enableSorting={ false }
         muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
-        manualFiltering
-        manualSorting
-        muiTableContainerProps={ containerProps }
-        state={ tableState }
         renderEmptyRowsFallback={ () => <EmptyData message="No data found!" /> }
       />
 
