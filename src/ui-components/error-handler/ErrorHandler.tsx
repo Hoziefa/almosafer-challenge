@@ -1,20 +1,19 @@
 import React from "react";
 import { Alert, Snackbar } from "@mui/material";
+import { observer } from "mobx-react-lite";
 
-type ErrorHandlerProps = {
-  isOpen: boolean;
-  message: string;
-  duration?: number;
-};
+import { useStore } from "@stores/store";
 
-function ErrorHandler(props: ErrorHandlerProps) {
+function ErrorHandler() {
+  const { appStore } = useStore();
+
   return (
-    <Snackbar open={ props.isOpen } autoHideDuration={ props.duration ?? 2000 } anchorOrigin={ { vertical: "bottom", horizontal: "center" } }>
+    <Snackbar open={ appStore.showSnackbar } onClose={ appStore.onClose } autoHideDuration={ appStore.duration } anchorOrigin={ { vertical: "bottom", horizontal: "center" } }>
       <Alert severity="error" sx={ { width: "100%" } }>
-        { props.message }
+        { appStore.message }
       </Alert>
     </Snackbar>
   );
 }
 
-export default ErrorHandler;
+export default observer(ErrorHandler);

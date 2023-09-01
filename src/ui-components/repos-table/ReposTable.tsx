@@ -2,18 +2,19 @@
 
 import React, { UIEvent, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
-import { useUsersQuery } from "@hooks/useUsersQuery";
 
-import { Avatar, Link, Typography } from "@mui/material";
-import { Launch } from "@mui/icons-material";
+import { Avatar, Box, Chip, Typography } from "@mui/material";
 import EmptyData from "@components/empty-data";
+import AvatarTooltip from "@components/avatar-tooltip";
+import Forks from "@components/forks";
 
-import { observer } from "mobx-react-lite";
 import { useDataTableInfiniteScroll } from "@hooks/useDataTableInfinitePagination";
+import { useReposQuery } from "@hooks/useReposQuery";
+import { observer } from "mobx-react-lite";
 
-import type { User } from "@app-types";
+import type { Repository } from "@app-types";
 
-function UsersTable() {
+function ReposTable() {
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -26,11 +27,11 @@ function UsersTable() {
     globalFilter,
     isFetchingNextPage,
     hasNextPage,
-  } = useUsersQuery();
+  } = useReposQuery();
 
   const { onInfinitePagination } = useDataTableInfiniteScroll({ containerRef: tableContainerRef, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, globalFilter });
 
-  const columns: Array<MRT_ColumnDef<User>> = useMemo(() => {
+  const columns: Array<MRT_ColumnDef<Repository>> = useMemo(() => {
     return [
       {
         header: "#",
@@ -45,42 +46,64 @@ function UsersTable() {
       },
       {
         header: "Avatar",
-        accessorKey: "avatar_url",
+        accessorKey: "owner.avatar_url",
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            <Avatar src={ row.original.avatar_url } sx={ { width: "60px", height: "60px" } } />
+            <Avatar src={ row.original.owner.avatar_url } sx={ { width: "60px", height: "60px" } } />
           );
         },
       },
       {
         header: "Name",
-        accessorKey: "login",
+        accessorKey: "full_name",
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            <Typography variant="body1">{ row.original.login }</Typography>
+            <Typography variant="body1">{ row.original.full_name }</Typography>
           );
         },
       },
       {
-        header: "",
-        accessorKey: "url",
+        header: "Forks",
+        accessorKey: "forksList",
         enableColumnFilterModes: false,
         enableColumnFilter: false,
-        enableSorting: false,
         Cell: ({ row }) => {
           return (
-            <Link href={ row.original.html_url }>
-              <Launch color="info" />
-            </Link>
+            <AvatarTooltip>
+              <Forks url={ row.original.forks_url } />
+            </AvatarTooltip>
+          );
+        },
+      },
+      {
+        header: "Topics",
+        accessorKey: "topics",
+        enableColumnFilterModes: false,
+        enableColumnFilter: false,
+        Cell: ({ row }) => {
+          return (
+            <Box display="flex" flexWrap="wrap" gap="0.3rem">
+              { row.original.topics.slice(0, 5).map(((topic) => (
+                <Chip label={ topic } color="info" key={ topic } size="medium" sx={ { fontSize: "0.9rem" } } />
+              ))) }
+            </Box>
           );
         },
       },
     ];
   }, []);
+
+  const containerProps = useMemo(() => {
+    return {
+      ref: tableContainerRef,
+      sx: { maxHeight: "800px" },
+      onScroll: (event: UIEvent<HTMLDivElement>) => onInfinitePagination(event.target as HTMLDivElement),
+    };
+  }, [onInfinitePagination]);
 
   const tableState = useMemo(() => {
     return {
@@ -90,14 +113,6 @@ function UsersTable() {
       showGlobalFilter: true,
     };
   }, [globalFilter, isFetching, isLoading]);
-
-  const containerProps = useMemo(() => {
-    return {
-      ref: tableContainerRef,
-      sx: { maxHeight: "800px" },
-      onScroll: (event: UIEvent<HTMLDivElement>) => onInfinitePagination(event.target as HTMLDivElement),
-    };
-  }, [onInfinitePagination]);
 
   return (
     <MaterialReactTable
@@ -120,10 +135,10 @@ function UsersTable() {
       enableColumnActions={ false }
       enableBottomToolbar={ false }
       enableSorting={ false }
-      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { minWidth: "460px" } } }
+      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "460px" } } }
       renderEmptyRowsFallback={ () => <EmptyData message="Oops! Not Found" /> }
     />
   );
 }
 
-export default observer(UsersTable);
+export default observer(ReposTable);

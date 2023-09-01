@@ -14,12 +14,13 @@ export type QueryProps<T, TError = unknown, TData = T, TQueryKey extends QueryKe
   params?: AxiosRequestConfig["params"];
   queryOptions?: Omit<UseQueryOptions<T, TError, TData, TQueryKey>, "queryKey" | "queryFn" | "initialData"> & {
     initialData?: () => undefined
-  }
+  },
+  onError?: (err: Error) => void;
 }
 
 const PER_PAGE = 10;
 
-export function usePaginatedTableQuery<T extends Record<string, any>>(props: QueryProps<T>) {
+export const usePaginatedTableQuery = <T extends Record<string, any>>(props: QueryProps<T>) => {
   const [globalFilter, setGlobalFilter] = useState<string>("");
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
@@ -37,6 +38,7 @@ export function usePaginatedTableQuery<T extends Record<string, any>>(props: Que
       getNextPageParam: (_lastGroup, groups) => groups.length,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
+      onError: props.onError,
     },
   );
 
@@ -47,4 +49,4 @@ export function usePaginatedTableQuery<T extends Record<string, any>>(props: Que
     globalFilter,
     setGlobalFilter,
   };
-}
+};
