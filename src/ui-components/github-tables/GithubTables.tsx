@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import UsersTable from "@components/users-table";
 import ReposTable from "@components/repos-table";
-import { MenuItem, TextField } from "@mui/material";
+import { Box, MenuItem, TextField } from "@mui/material";
 
 type Filter = "users" | "repositories";
 
@@ -26,19 +26,22 @@ function GithubTables() {
 
   return (
     <>
-      <TextField
-        label="Select a type"
-        select
-        fullWidth
-        value={ filter }
-        onChange={ (event) => setFilter(event.target.value as Filter) }
-      >
-        { FILTERS.map((option) => (
-          <MenuItem key={ option.value } value={ option.value }>
-            { option.label }
-          </MenuItem>
-        )) }
-      </TextField>
+      <Box mb={ 2 } maxWidth="460px">
+        <TextField
+          label="Select a type"
+          select
+          fullWidth
+          size="small"
+          value={ filter }
+          onChange={ (event) => setFilter(event.target.value as Filter) }
+        >
+          { FILTERS.map((option) => (
+            <MenuItem key={ option.value } value={ option.value }>
+              { option.label }
+            </MenuItem>
+          )) }
+        </TextField>
+      </Box>
 
       { renderedTable[filter] }
     </>

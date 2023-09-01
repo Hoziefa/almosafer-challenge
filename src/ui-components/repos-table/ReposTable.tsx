@@ -1,17 +1,19 @@
 "use client";
 
-import React, { UIEvent, useCallback, useEffect, useMemo, useRef } from "react";
+import React, { UIEvent, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 
 import { Avatar, Box, Chip, Typography } from "@mui/material";
-
-import ErrorHandler from "@components/error-handler";
 import EmptyData from "@components/empty-data";
 
 import { useReposQuery } from "@hooks/useReposQuery";
 import type { Repository } from "@app-types";
+import { observer } from "mobx-react-lite";
+import { useDataTableInfiniteScroll } from "@hooks/useDataTableInfinitePagination";
 
 function ReposTable() {
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+
   const {
     data,
     rowCount,
@@ -22,10 +24,9 @@ function ReposTable() {
     globalFilter,
     isFetchingNextPage,
     hasNextPage,
-    isError,
   } = useReposQuery();
 
-  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const { onInfinitePagination } = useDataTableInfiniteScroll({ containerRef: tableContainerRef, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, globalFilter });
 
   const columns: Array<MRT_ColumnDef<Repository>> = useMemo(() => {
     return [
@@ -37,6 +38,17 @@ function ReposTable() {
         Cell: ({ row }) => {
           return (
             <Typography variant="body1">{ row.original.id }</Typography>
+          );
+        },
+      },
+      {
+        header: "Name",
+        accessorKey: "full_name",
+        enableColumnFilterModes: false,
+        enableColumnFilter: false,
+        Cell: ({ row }) => {
+          return (
+            <Typography variant="h6">{ row.original.full_name }</Typography>
           );
         },
       },
@@ -71,25 +83,10 @@ function ReposTable() {
     ];
   }, []);
 
-  const onInfinitePagination = useCallback((containerRefElement?: HTMLDivElement | null) => {
-    if (!containerRefElement) return;
-
-    const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-
-    if (
-      scrollTop >= (scrollHeight - clientHeight) &&
-      !isFetching &&
-      !isFetchingNextPage &&
-      hasNextPage
-    ) {
-      fetchNextPage();
-    }
-  }, [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]);
-
   const containerProps = useMemo(() => {
     return {
       ref: tableContainerRef,
-      sx: { maxHeight: "72dvh" },
+      sx: { maxHeight: "800px" },
       onScroll: (event: UIEvent<HTMLDivElement>) => onInfinitePagination(event.target as HTMLDivElement),
     };
   }, [onInfinitePagination]);
@@ -103,43 +100,31 @@ function ReposTable() {
     };
   }, [globalFilter, isFetching, isLoading]);
 
-  // Scroll to the top when entering a query
-  useEffect(() => {
-    tableContainerRef.current?.scrollTo({ top: 0 });
-  }, [globalFilter]);
-
   return (
-    <>
-      <MaterialReactTable
-        columns={ columns }
-        data={ data }
-        rowCount={ rowCount }
-        state={ tableState }
-        onGlobalFilterChange={ setGlobalFilter }
-        muiTableContainerProps={ containerProps }
-        positionGlobalFilter="left"
-        enableGlobalFilter
-        manualFiltering
-        manualSorting
-        enableFilterMatchHighlighting={ false }
-        enablePagination={ false }
-        enableFullScreenToggle={ false }
-        enableDensityToggle={ false }
-        enableHiding={ false }
-        enableFilters={ false }
-        enableColumnActions={ false }
-        enableBottomToolbar={ false }
-        enableSorting={ false }
-        muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
-        renderEmptyRowsFallback={ () => <EmptyData message="No data found!" /> }
-      />
-
-      <ErrorHandler
-        isOpen={ isError }
-        message="An error occurred please try again later."
-      />
-    </>
+    <MaterialReactTable
+      columns={ columns }
+      data={ data }
+      rowCount={ rowCount }
+      state={ tableState }
+      onGlobalFilterChange={ setGlobalFilter }
+      muiTableContainerProps={ containerProps }
+      positionGlobalFilter="left"
+      enableGlobalFilter
+      manualFiltering
+      manualSorting
+      enableFilterMatchHighlighting={ false }
+      enablePagination={ false }
+      enableFullScreenToggle={ false }
+      enableDensityToggle={ false }
+      enableHiding={ false }
+      enableFilters={ false }
+      enableColumnActions={ false }
+      enableBottomToolbar={ false }
+      enableSorting={ false }
+      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
+      renderEmptyRowsFallback={ () => <EmptyData message="No data found!" /> }
+    />
   );
 }
 
-export default ReposTable;
+export default observer(ReposTable);

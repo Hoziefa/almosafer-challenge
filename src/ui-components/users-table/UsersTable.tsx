@@ -120,7 +120,7 @@ function UsersTable() {
       enableColumnActions={ false }
       enableBottomToolbar={ false }
       enableSorting={ false }
-      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
+      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { minWidth: "460px" } } }
       renderEmptyRowsFallback={ () => <EmptyData message="Oops! Not Found" /> }
     />
   );
