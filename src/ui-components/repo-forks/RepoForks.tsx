@@ -2,11 +2,11 @@ import React from "react";
 import { useForksQuery } from "@hooks/useForksQuery";
 import { Alert, Avatar, AvatarGroup, Link, Skeleton, Stack } from "@mui/material";
 
-type ForksProps = {
+type RepoForksProps = {
   url: string;
 };
 
-function Forks(props: ForksProps) {
+function RepoForks(props: RepoForksProps) {
   const { data, isLoading } = useForksQuery(props.url);
 
   if (isLoading) {
@@ -42,4 +42,4 @@ function Forks(props: ForksProps) {
   );
 }
 
-export default Forks;
+export default RepoForks;

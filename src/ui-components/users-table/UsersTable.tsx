@@ -6,7 +6,7 @@ import { useUsersQuery } from "@hooks/useUsersQuery";
 
 import { Avatar, Link, Typography } from "@mui/material";
 import { Launch } from "@mui/icons-material";
-import EmptyData from "@components/empty-data";
+import EmptyHandler from "@components/empty-handler";
 
 import { observer } from "mobx-react-lite";
 import { useDataTableInfiniteScroll } from "@hooks/useDataTableInfinitePagination";
@@ -121,7 +121,7 @@ function UsersTable() {
       enableBottomToolbar={ false }
       enableSorting={ false }
       muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { minWidth: "460px" } } }
-      renderEmptyRowsFallback={ () => <EmptyData message="Oops! Not Found" /> }
+      renderEmptyRowsFallback={ () => <EmptyHandler message="Oops! Not Found" /> }
     />
   );
 }

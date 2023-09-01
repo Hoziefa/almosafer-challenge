@@ -4,9 +4,9 @@ import React, { UIEvent, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 
 import { Avatar, Box, Chip, Typography } from "@mui/material";
-import EmptyData from "@components/empty-data";
+import EmptyHandler from "../empty-handler";
 import AvatarTooltip from "@components/avatar-tooltip";
-import Forks from "@components/forks";
+import RepoForks from "../repo-forks";
 
 import { useDataTableInfiniteScroll } from "@hooks/useDataTableInfinitePagination";
 import { useReposQuery } from "@hooks/useReposQuery";
@@ -68,13 +68,13 @@ function ReposTable() {
       },
       {
         header: "Forks",
-        accessorKey: "forksList",
+        accessorKey: "forks_url",
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
             <AvatarTooltip>
-              <Forks url={ row.original.forks_url } />
+              <RepoForks url={ row.original.forks_url } />
             </AvatarTooltip>
           );
         },
@@ -136,7 +136,7 @@ function ReposTable() {
       enableBottomToolbar={ false }
       enableSorting={ false }
       muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "460px" } } }
-      renderEmptyRowsFallback={ () => <EmptyData message="Oops! Not Found" /> }
+      renderEmptyRowsFallback={ () => <EmptyHandler message="Oops! Not Found" /> }
     />
   );
 }

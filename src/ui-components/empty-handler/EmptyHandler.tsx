@@ -2,11 +2,11 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { SentimentDissatisfied } from "@mui/icons-material";
 
-type EmptyDataProps = {
+type EmptyHandlerProps = {
   message: string;
 };
 
-function EmptyData(props: EmptyDataProps) {
+function EmptyHandler(props: EmptyHandlerProps) {
   return (
     <Box marginY="4rem" display="flex" justifyContent="center" alignItems="center" flexDirection="column">
       <SentimentDissatisfied sx={ { fontSize: "5rem", color: "darkgray" } } />
@@ -16,4 +16,4 @@ function EmptyData(props: EmptyDataProps) {
   );
 }
 
-export default EmptyData;
+export default EmptyHandler;
