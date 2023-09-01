@@ -12,7 +12,7 @@ export default class AppStore {
   public onOpen = (message: string, duration?: number): void => {
     this.showSnackbar = true;
     this.message = message;
-    this.duration = duration;
+    this.duration ??= duration;
   };
 
   public onClose = (): void => {
