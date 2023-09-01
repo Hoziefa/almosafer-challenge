@@ -1,7 +1,7 @@
 "use client";
 
 import React, { UIEvent, useCallback, useMemo, useRef } from "react";
-import { MaterialReactTable, type MRT_ColumnDef, type MRT_Virtualizer } from "material-react-table";
+import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import { useUsersQuery } from "@hooks/useUsersQuery";
 import { Avatar } from "@mui/material";
 import { Launch } from "@mui/icons-material";
@@ -20,10 +20,11 @@ function UsersTable() {
     fetchNextPage,
     setGlobalFilter,
     globalFilter,
+    isFetchingNextPage,
+    hasNextPage,
   } = useUsersQuery();
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
-  const rowVirtualizerInstanceRef = useRef<MRT_Virtualizer<HTMLDivElement, HTMLTableRowElement>>(null);
 
   const columns: Array<MRT_ColumnDef<User>> = useMemo(() => {
     return [
@@ -78,18 +79,19 @@ function UsersTable() {
   }, []);
 
   const onInfinitePagination = useCallback((containerRefElement?: HTMLDivElement | null) => {
-    if (containerRefElement) {
-      const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+    if (!containerRefElement) return;
 
-      if (
-        scrollHeight - scrollTop - clientHeight < 400 &&
-        !isFetching &&
-        (rowCount - data.length) < rowCount
-      ) {
-        fetchNextPage();
-      }
+    const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+
+    if (
+      scrollHeight - scrollTop - clientHeight < 300 &&
+      !isFetching &&
+      !isFetchingNextPage &&
+      hasNextPage
+    ) {
+      fetchNextPage();
     }
-  }, [fetchNextPage, isFetching, rowCount, data.length]);
+  }, [isFetching, isFetchingNextPage, hasNextPage, fetchNextPage]);
 
   const containerProps = useMemo(() => {
     return {
@@ -127,8 +129,6 @@ function UsersTable() {
       enableColumnActions={ false }
       enableBottomToolbar={ false }
       muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
-      rowVirtualizerInstanceRef={ rowVirtualizerInstanceRef }
-      rowVirtualizerProps={ { overscan: 4 } }
       manualFiltering
       manualSorting
       muiTableContainerProps={ containerProps }
