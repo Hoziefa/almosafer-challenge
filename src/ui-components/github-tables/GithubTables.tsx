@@ -4,18 +4,26 @@ import React, { useMemo, useState } from "react";
 import UsersTable from "@components/users-table";
 import ReposTable from "@components/repos-table";
 import { Box, MenuItem, TextField } from "@mui/material";
+import { useSearchParams } from "next/navigation";
+import { useAppendQueryParams } from "@hooks/useAppendQueryParams";
 
 type Filter = "users" | "repositories";
 
-type RenderedTable = { [key: string]: JSX.Element };
+type RenderedTable = { [key: string]: React.ReactElement };
 
 const FILTERS = [
   { label: "Users", value: "users" },
   { label: "Repositories", value: "repositories" },
 ];
 
+const FILTER_KEY = "type";
+
 function GithubTables() {
-  const [filter, setFilter] = useState<Filter>("users");
+  const searchParams = useSearchParams();
+
+  const [filter, setFilter] = useState<Filter>(searchParams.get(FILTER_KEY) as Filter ?? "users");
+
+  useAppendQueryParams(FILTER_KEY, filter);
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
