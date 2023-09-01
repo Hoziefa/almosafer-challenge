@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useMemo } from "react";
-import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
+import React, { UIEvent, useCallback, useMemo, useRef } from "react";
+import { MaterialReactTable, type MRT_ColumnDef, type MRT_Virtualizer } from "material-react-table";
 import { useUsersQuery } from "@hooks/useUsersQuery";
 import { Avatar } from "@mui/material";
 import { Launch } from "@mui/icons-material";
@@ -15,11 +15,15 @@ function UsersTable() {
     rowCount,
     isLoading,
     isFetching,
-    pagination,
-    setPagination,
     setSorting,
     sorting,
+    fetchNextPage,
+    setGlobalFilter,
+    globalFilter,
   } = useUsersQuery();
+
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const rowVirtualizerInstanceRef = useRef<MRT_Virtualizer<HTMLDivElement, HTMLTableRowElement>>(null);
 
   const columns: Array<MRT_ColumnDef<User>> = useMemo(() => {
     return [
@@ -30,7 +34,7 @@ function UsersTable() {
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            <span color="primary">{ row.original.id }</span>
+            <Typography variant="body1">{ row.original.id }</Typography>
           );
         },
       },
@@ -52,7 +56,7 @@ function UsersTable() {
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            <Typography variant="body1" color="#13def8">{ row.original.login }</Typography>
+            <Typography variant="body1">{ row.original.login }</Typography>
           );
         },
       },
@@ -65,7 +69,7 @@ function UsersTable() {
         Cell: ({ row }) => {
           return (
             <a href={ row.original.html_url }>
-              <Launch />
+              <Launch color="info" />
             </a>
           );
         },
@@ -73,13 +77,45 @@ function UsersTable() {
     ];
   }, []);
 
+  const onInfinitePagination = useCallback((containerRefElement?: HTMLDivElement | null) => {
+    if (containerRefElement) {
+      const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+
+      if (
+        scrollHeight - scrollTop - clientHeight < 400 &&
+        !isFetching &&
+        (rowCount - data.length) < rowCount
+      ) {
+        fetchNextPage();
+      }
+    }
+  }, [fetchNextPage, isFetching, rowCount, data.length]);
+
+  const containerProps = useMemo(() => {
+    return {
+      ref: tableContainerRef,
+      sx: { maxHeight: "800px" },
+      onScroll: (event: UIEvent<HTMLDivElement>) => onInfinitePagination(event.target as HTMLDivElement),
+    };
+  }, [onInfinitePagination]);
+
+  const tableState = useMemo(() => {
+    return {
+      isLoading,
+      globalFilter,
+      sorting,
+      showProgressBars: isFetching,
+      showGlobalFilter: true,
+    };
+  }, [globalFilter, isFetching, isLoading, sorting]);
+
   return (
     <MaterialReactTable
       columns={ columns }
       data={ data }
-      onPaginationChange={ setPagination }
       rowCount={ rowCount }
       onSortingChange={ setSorting }
+      onGlobalFilterChange={ setGlobalFilter }
       enableGlobalFilter
       positionGlobalFilter="left"
       enableFilterMatchHighlighting={ false }
@@ -90,14 +126,13 @@ function UsersTable() {
       enableFilters={ false }
       enableColumnActions={ false }
       enableBottomToolbar={ false }
-      muiSearchTextFieldProps={ { variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
-      state={ {
-        isLoading,
-        pagination,
-        sorting,
-        showProgressBars: isFetching,
-        showGlobalFilter: true,
-      } }
+      muiSearchTextFieldProps={ { color: "info", variant: "outlined", fullWidth: true, size: "small", margin: "dense", sx: { width: "50dvh" } } }
+      rowVirtualizerInstanceRef={ rowVirtualizerInstanceRef }
+      rowVirtualizerProps={ { overscan: 4 } }
+      manualFiltering
+      manualSorting
+      muiTableContainerProps={ containerProps }
+      state={ tableState }
     />
   );
 }
