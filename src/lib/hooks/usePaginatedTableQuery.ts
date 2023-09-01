@@ -39,7 +39,6 @@ export function usePaginatedTableQuery<T extends Record<string, any>>(props: Que
       getNextPageParam: (_lastGroup, groups) => groups.length,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
-      cacheTime: 1e9,
     },
   );
 

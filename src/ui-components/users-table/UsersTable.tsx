@@ -3,10 +3,13 @@
 import React, { UIEvent, useCallback, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import { useUsersQuery } from "@hooks/useUsersQuery";
+
 import { Avatar } from "@mui/material";
 import { Launch } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
+
 import ErrorHandler from "@components/error-handler";
+import EmptyData from "@components/empty-data";
 
 import type { User } from "@app-types";
 
@@ -59,7 +62,7 @@ function UsersTable() {
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
-            <Typography variant="body1">{ row.original.login }</Typography>
+            <Typography variant="h6">{ row.original.login }</Typography>
           );
         },
       },
@@ -136,6 +139,7 @@ function UsersTable() {
         manualSorting
         muiTableContainerProps={ containerProps }
         state={ tableState }
+        renderEmptyRowsFallback={ () => <EmptyData message="No data found!" /> }
       />
 
       <ErrorHandler
