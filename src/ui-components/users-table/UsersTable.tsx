@@ -4,9 +4,8 @@ import React, { UIEvent, useCallback, useEffect, useMemo, useRef } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import { useUsersQuery } from "@hooks/useUsersQuery";
 
-import { Avatar } from "@mui/material";
+import { Avatar, Link, Typography } from "@mui/material";
 import { Launch } from "@mui/icons-material";
-import Typography from "@mui/material/Typography";
 
 import ErrorHandler from "@components/error-handler";
 import EmptyData from "@components/empty-data";
@@ -72,9 +71,9 @@ function UsersTable() {
         enableSorting: false,
         Cell: ({ row }) => {
           return (
-            <a href={ row.original.html_url }>
+            <Link href={ row.original.html_url }>
               <Launch color="info" />
-            </a>
+            </Link>
           );
         },
       },
