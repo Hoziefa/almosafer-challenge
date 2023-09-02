@@ -25,7 +25,8 @@
       "@components/*": [ "./src/ui-components/*" ],
       "@stores/*": [ "./src/stores/*" ],
       "@app-types": [ "./src/types/index" ]
-    }
+    },
+    "types": [ "@testing-library/jest-dom" ]
   },
   "include": [ "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts" ],
   "exclude": [ "node_modules" ]
