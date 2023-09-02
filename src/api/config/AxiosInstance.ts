@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from 'axios';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -8,10 +8,10 @@ const sleep = (delay: number) => {
 
 const instance: AxiosInstance = axios.create();
 
-instance.defaults.baseURL = process.env.REACT_APP_BASE_URL ?? "https://api.github.com";
+instance.defaults.baseURL = 'https://api.github.com';
 
 instance.interceptors.response.use(async (response) => {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === 'development') {
     await sleep(500);
   }
 

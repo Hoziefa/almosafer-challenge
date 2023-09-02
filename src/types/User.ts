@@ -18,4 +18,4 @@ export type User = {
   starred_url: string;
   events_url: string;
   site_admin: boolean;
-}
+};
