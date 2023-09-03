@@ -12,7 +12,6 @@ import { observer } from 'mobx-react-lite';
 import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 
 import type { User } from '@app-types';
-import { Repository } from '@app-types';
 
 function UsersTable() {
   const {
@@ -109,7 +108,7 @@ function UsersTable() {
 
   return (
     <CommonTableRender
-      columns={columns as MRT_ColumnDef<User | Repository>[]}
+      columns={columns}
       data={data}
       rowCount={rowCount}
       state={tableState}

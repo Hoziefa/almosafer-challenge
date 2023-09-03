@@ -13,7 +13,6 @@ import { useReposQuery } from '@hooks/useReposQuery';
 import { observer } from 'mobx-react-lite';
 
 import type { Repository } from '@app-types';
-import { User } from '@app-types';
 
 function ReposTable() {
   const {
@@ -132,8 +131,8 @@ function ReposTable() {
 
   return (
     <CommonTableRender
-      columns={columns as MRT_ColumnDef<User | Repository>[]}
-      data={data as Repository[]}
+      columns={columns}
+      data={data}
       rowCount={rowCount}
       state={tableState}
       onGlobalFilterChange={setGlobalFilter}

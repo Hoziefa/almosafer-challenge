@@ -7,7 +7,7 @@ import CommonTableRender, {
 import type { User } from '@app-types';
 
 describe('<CommonTableRender /> Tests:', () => {
-  const props: CommonTableRenderProps = {
+  const props = {
     columns: [
       {
         header: '#',
@@ -39,7 +39,7 @@ describe('<CommonTableRender /> Tests:', () => {
       showGlobalFilter: true,
     },
     onGlobalFilterChange: () => {},
-  };
+  } as CommonTableRenderProps;
 
   it('should have the #ID column (label & value)', () => {
     render(<CommonTableRender {...props} />);
