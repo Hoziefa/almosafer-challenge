@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { SentimentDissatisfied } from '@mui/icons-material';
 
-type EmptyHandlerProps = {
+export type EmptyHandlerProps = {
   message: string;
 };
 

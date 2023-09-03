@@ -1,22 +1,29 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
+import {
+  MaterialReactTable,
+  MaterialReactTableProps,
+  MRT_ColumnDef,
+} from 'material-react-table';
 
 import EmptyHandler from '@components/empty-handler';
 
-import type { Repository, User } from '@app-types';
-
-type CommonTableRenderProps = {
-  columns: MRT_ColumnDef<User | Repository>[];
-  data: (User | Repository)[];
+export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
+  MaterialReactTableProps<T>,
+  'data'
+> & {
+  data: T[];
+  columns: Array<MRT_ColumnDef<T>>;
   rowCount: number;
   state: object;
   onGlobalFilterChange: Dispatch<SetStateAction<string>>;
   muiTableContainerProps: object;
 };
 
-function CommonTableRender(props: CommonTableRenderProps) {
+function CommonTableRender<T extends Record<string, any> = {}>(
+  props: CommonTableRenderProps<T>,
+) {
   return (
-    <MaterialReactTable
+    <MaterialReactTable<T>
       {...props}
       positionGlobalFilter='left'
       enableGlobalFilter
