@@ -1,6 +1,6 @@
 import { usePaginatedTableQuery } from '@hooks/usePaginatedTableQuery';
 import { ReposHandler } from '@api/handlers/repos';
-import { store } from "@stores/store";
+import { store } from '@stores/store';
 
 import type { Repository } from '@app-types';
 
