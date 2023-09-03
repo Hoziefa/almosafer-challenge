@@ -5,7 +5,7 @@ import EmptyHandler from '@components/empty-handler';
 
 import type { Repository, User } from '@app-types';
 
-type CommonTableRenderProps = {
+export type CommonTableRenderProps = {
   columns: MRT_ColumnDef<User | Repository>[];
   data: (User | Repository)[];
   rowCount: number;

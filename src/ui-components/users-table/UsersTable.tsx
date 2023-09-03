@@ -74,7 +74,7 @@ function UsersTable() {
       },
       {
         header: '',
-        accessorKey: 'url',
+        accessorKey: 'html_url',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         enableSorting: false,
