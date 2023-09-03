@@ -79,7 +79,7 @@ function UsersTable() {
         enableSorting: false,
         Cell: ({ row }) => {
           return (
-            <Link href={row.original.html_url}>
+            <Link href={row.original.html_url} target='_blank'>
               <Launch color='info' />
             </Link>
           );

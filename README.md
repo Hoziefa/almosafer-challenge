@@ -12,8 +12,8 @@
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-- [Running Unit Tests](#running-unit-tests)
+- [**Getting Started**](#getting-started)
+- [**Running Unit Tests**](#running-unit-tests)
 
 ## Getting Started
 
@@ -47,6 +47,6 @@ ___
 
 To run the unit tests, execute the following command:
 
-### `yarn run test:dev`
+`yarn run test:dev`
 
 This command launches the test runner in interactive watch mode, making it easy to identify and fix issues.
