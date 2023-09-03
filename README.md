@@ -26,7 +26,7 @@ This project was built with Next, React and Typescript following the web standar
 
 ### To Run unit-tests
 
-### `yarn run test`
+### `yarn run test:dev`
 
 Launches the test runner in the interactive watch mode.
 
