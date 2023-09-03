@@ -8,7 +8,7 @@ const sleep = (delay: number) => {
 
 const instance: AxiosInstance = axios.create();
 
-instance.defaults.baseURL = 'https://api.github.com';
+instance.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 instance.interceptors.response.use(async (response) => {
   if (process.env.NODE_ENV === 'development') {
