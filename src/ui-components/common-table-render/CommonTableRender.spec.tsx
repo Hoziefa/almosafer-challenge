@@ -58,7 +58,7 @@ describe('<CommonTableRender /> Tests:', () => {
   it('should have all the columns', () => {
     render(<CommonTableRender {...props} />);
 
-    expect(screen.getByRole('table').children).toHaveLength(3);
+    expect(screen.getAllByRole('cell')).toHaveLength(4);
   });
 
   it('should have the query filter text-field', () => {

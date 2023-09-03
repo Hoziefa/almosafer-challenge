@@ -95,7 +95,7 @@ function ReposTable() {
         Cell: ({ row }) => {
           return (
             <Box display='flex' flexWrap='wrap' gap='0.3rem'>
-              {row.original.topics.slice(0, 5).map((topic) => (
+              {row.original.topics.slice(0, 3).map((topic) => (
                 <Chip
                   label={topic}
                   color='info'
