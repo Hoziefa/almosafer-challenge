@@ -22,6 +22,7 @@
       "@api/*": [ "./src/api/*" ],
       "@assets/*": [ "./src/assets/*" ],
       "@hooks/*": [ "./src/lib/hooks/*" ],
+      "@test-utils/*": [ "./src/lib/test-utils/*" ],
       "@components/*": [ "./src/ui-components/*" ],
       "@stores/*": [ "./src/stores/*" ],
       "@app-types": [ "./src/types/index" ]

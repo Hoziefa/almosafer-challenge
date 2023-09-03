@@ -1,19 +1,11 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { renderWithStore } from '@test-utils/global-renders';
 
 import ErrorHandler from './ErrorHandler';
-import { StoreContext } from '@stores/store';
 
-type Props = {
-  showSnackbar: boolean;
-  message: string;
-  duration?: number;
-  onOpen: (message: string, duration?: number) => void;
-  onClose: () => void;
-};
-
-const RenderWithStore = (props: Partial<Props> = {}) => {
-  const store = {
+describe('<ErrorHandler /> Tests:', () => {
+  const store = (props = {}) => ({
     appStore: {
       showSnackbar: false,
       message: '',
@@ -21,30 +13,25 @@ const RenderWithStore = (props: Partial<Props> = {}) => {
       onClose: jest.fn(),
       ...props,
     },
-  };
+  });
 
-  return (
-    <StoreContext.Provider value={store}>
-      <ErrorHandler />
-    </StoreContext.Provider>
-  );
-};
-
-describe('<ErrorHandler /> Tests:', () => {
   it('should not show the error-handler when the showSnackbar is false', () => {
-    render(<RenderWithStore />);
+    renderWithStore(<ErrorHandler />, store());
 
     expect(screen.queryByRole('alert')).toBeNull();
   });
 
   it('should contain the error-handler when the showSnackbar is true', () => {
-    render(<RenderWithStore showSnackbar />);
+    renderWithStore(<ErrorHandler />, store({ showSnackbar: true }));
 
     screen.getByRole('alert');
   });
 
   it('should display the error-message', () => {
-    render(<RenderWithStore showSnackbar message='An error occurred' />);
+    renderWithStore(
+      <ErrorHandler />,
+      store({ showSnackbar: true, message: 'An error occurred' }),
+    );
 
     screen.getByText('An error occurred');
   });
@@ -52,7 +39,10 @@ describe('<ErrorHandler /> Tests:', () => {
   it('should dismount and call onClose after the delay is finished', async () => {
     const onClose = jest.fn();
 
-    render(<RenderWithStore showSnackbar duration={100} onClose={onClose} />);
+    renderWithStore(
+      <ErrorHandler />,
+      store({ showSnackbar: true, duration: 100, onClose }),
+    );
 
     await waitFor(() => {
       expect(onClose).toBeCalled();

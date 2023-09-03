@@ -1,10 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from '@tanstack/react-query';
+import { screen } from '@testing-library/react';
+import { QueryClient, useQuery } from '@tanstack/react-query';
+import { renderWithQuery } from '@test-utils/global-renders';
 
 import RepoForks, { type RepoForksProps } from './RepoForks';
 
@@ -16,24 +13,14 @@ jest.mock('@tanstack/react-query', () => ({
   useQuery: jest.fn(),
 }));
 
-const renderWithQuery = (queryClient: QueryClient, props: RepoForksProps) => {
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <RepoForks {...props} />
-    </QueryClientProvider>,
-  );
-};
-
 describe('<RepoForks /> Tests:', () => {
   const queryClient = new QueryClient();
-  const props: RepoForksProps = {
-    url: '',
-  };
+  const props: RepoForksProps = { url: '' };
 
   it('should display the skeleton avatar to indicate loading state', () => {
     (useQuery as Mock).mockReturnValue({ data: [], isLoading: true });
 
-    renderWithQuery(queryClient, props);
+    renderWithQuery(<RepoForks {...props} />, queryClient);
 
     screen.getAllByTestId('PersonIcon');
   });
@@ -41,7 +28,7 @@ describe('<RepoForks /> Tests:', () => {
   it('should display (no forks found) message when the response is empty', () => {
     (useQuery as Mock).mockReturnValue({ data: [] });
 
-    renderWithQuery(queryClient, props);
+    renderWithQuery(<RepoForks {...props} />, queryClient);
 
     screen.getByText('No forks found!');
   });
@@ -62,7 +49,7 @@ describe('<RepoForks /> Tests:', () => {
       ],
     });
 
-    renderWithQuery(queryClient, props);
+    renderWithQuery(<RepoForks {...props} />, queryClient);
 
     expect(screen.getByRole('link')).toHaveAttribute('href', 'test-url #1');
     screen.getByTitle('Almosafer');
