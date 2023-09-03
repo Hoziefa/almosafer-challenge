@@ -41,27 +41,33 @@ describe('<CommonTableRender /> Tests:', () => {
     onGlobalFilterChange: () => {},
   } as CommonTableRenderProps;
 
-  it('should have the #ID column (label & value)', () => {
+  it('should display the empty-handler when no data is provided or found', () => {
+    render(<CommonTableRender {...props} data={[]} />);
+
+    screen.getByText('Oops! Not Found');
+  });
+
+  it('should contain the #ID column (label & value)', () => {
     render(<CommonTableRender {...props} />);
 
     expect(screen.getByText('#')).toBeInTheDocument();
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
-  it('should have the Name column (label & value)', () => {
+  it('should contain the Name column (label & value)', () => {
     render(<CommonTableRender {...props} />);
 
     expect(screen.getByText('Name')).toBeInTheDocument();
     expect(screen.getByText('test #1')).toBeInTheDocument();
   });
 
-  it('should have all the columns', () => {
+  it('should contain all the columns', () => {
     render(<CommonTableRender {...props} />);
 
     expect(screen.getAllByRole('cell')).toHaveLength(4);
   });
 
-  it('should have the query filter text-field', () => {
+  it('should contain the query filter text-field', () => {
     render(<CommonTableRender {...props} />);
 
     screen.getByRole('textbox');
