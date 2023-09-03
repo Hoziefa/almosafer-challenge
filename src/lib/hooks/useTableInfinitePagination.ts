@@ -39,7 +39,7 @@ export const useDataTableInfiniteScroll = (
 
   // Scroll to the top when entering a query
   useEffect(() => {
-    props.containerRef.current?.scrollTo({ top: 0 });
+    props.containerRef.current?.scrollTo?.({ top: 0 });
   }, [props.globalFilter]);
 
   return {

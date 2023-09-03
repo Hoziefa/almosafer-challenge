@@ -9,7 +9,7 @@ import {
   Stack,
 } from '@mui/material';
 
-type RepoForksProps = {
+export type RepoForksProps = {
   url: string;
 };
 
@@ -41,13 +41,13 @@ function RepoForks(props: RepoForksProps) {
   return (
     <Stack direction='row' gap={2}>
       <AvatarGroup>
-        {data!.length === 0 && (
+        {data?.length === 0 && (
           <Alert severity='error' color='warning'>
             No forks found!
           </Alert>
         )}
 
-        {data!.slice(0, 3)?.map(({ owner, full_name }) => (
+        {data?.slice(0, 3)?.map(({ owner, full_name }) => (
           <Link key={owner.id} href={owner.html_url}>
             <Avatar
               src={owner.avatar_url}
