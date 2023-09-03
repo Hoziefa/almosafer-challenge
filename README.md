@@ -4,9 +4,9 @@ This project was built with Next, React and Typescript following the web standar
 
 ## Features
 
-* User can apply multiple filters to narrow the repositories/users
-* Filters are persisted using Query-Params
-* Components are fully unit-tested and integration-tested
+* User can apply filtering to see the results for repositories/users
+* Type-Filter is persisted using Query-Params
+* Components are unit-tested and integration-tested
 
 ## Getting Started
 
@@ -16,20 +16,20 @@ This project was built with Next, React and Typescript following the web standar
 
 #### 2. Install dependencies
 
-`npm install`
+`yarn install`
 
 #### 3. Run the development server
 
-`npm start`
+`yarn run dev`
 
 **Open [http://localhost:3000](http://localhost:3000) to view it in the browser.**
 
 ### To Run unit-tests
 
-### `npm test`
+### `yarn run test`
 
 Launches the test runner in the interactive watch mode.
 
 ## Continuous Integration and Deployment
 
-###### This Project uses GitHub Actions to automatically run tests after each (push, pull-request)
+###### This Project uses GitHub Actions to automatically run tests after each (pull-request)
