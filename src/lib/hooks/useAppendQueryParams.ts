@@ -12,7 +12,8 @@ export const useAppendQueryParams = (
   useEffect(() => {
     const url = new URLSearchParams(searchParams);
 
-    url.set(filterKey, filterValue);
+    if (filterValue) url.set(filterKey, filterValue);
+    else url.delete(filterKey);
 
     router.push(`${pathname}?${url.toString()}`);
   }, [filterKey, filterValue, pathname, router, searchParams]);
