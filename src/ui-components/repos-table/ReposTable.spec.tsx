@@ -12,6 +12,19 @@ jest.mock('@tanstack/react-query', () => ({
   useInfiniteQuery: jest.fn(),
 }));
 
+jest.mock('next/navigation', () => {
+  return {
+    ...jest.requireActual('next/navigation'),
+    useRouter: jest.fn().mockReturnValue({
+      push: jest.fn(),
+    }),
+    usePathname: jest.fn(),
+    useSearchParams: jest.fn().mockReturnValue({
+      get: () => '',
+    }),
+  };
+});
+
 describe('<ReposTable /> Tests:', () => {
   const queryClient = new QueryClient();
 
