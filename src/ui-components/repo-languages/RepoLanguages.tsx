@@ -3,13 +3,18 @@ import { Button, Chip, Skeleton, Stack } from '@mui/material';
 
 import { useLanguagesQuery } from '@hooks/useLanguagesQuery';
 
-type RepoLanguagesProps = {
+export type RepoLanguagesProps = {
   url: string;
 };
 
 function ChipSkeleton() {
   return (
-    <Stack gap={1} flexDirection='row' flexWrap='wrap'>
+    <Stack
+      gap={1}
+      flexDirection='row'
+      flexWrap='wrap'
+      data-testid='chip-skeleton'
+    >
       <Skeleton variant='rounded' height={18}>
         <Chip sx={{ width: '80px' }} />
       </Skeleton>
@@ -38,6 +43,7 @@ function RepoLanguages(props: RepoLanguagesProps) {
     <>
       {!showLanguages && (
         <Button
+          data-testid='repo-languages-action'
           variant='contained'
           size='small'
           color='info'

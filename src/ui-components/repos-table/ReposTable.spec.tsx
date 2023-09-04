@@ -23,7 +23,6 @@ describe('<ReposTable /> Tests:', () => {
             items: {
               id: 1,
               full_name: 'Almosafer',
-              topics: ['javascript', 'typescript'],
               owner: {
                 avatar_url: 'test-avatar #1',
                 id: 2,
@@ -65,12 +64,11 @@ describe('<ReposTable /> Tests:', () => {
     screen.getByTestId('PersonIcon');
   });
 
-  it('should contain the Topics column (label & value)', () => {
+  it('should contain the Languages column (label & value)', () => {
     renderWithQuery(<ReposTable />, queryClient);
 
-    screen.getByText('Topics');
-    screen.getByText('javascript');
-    screen.getByText('typescript');
+    screen.getByText('Languages');
+    screen.getByTestId('repo-languages-action');
   });
 
   it('should contain all the columns', () => {
