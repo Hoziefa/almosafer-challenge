@@ -28,6 +28,10 @@ export type Owner = {
   site_admin: boolean;
 };
 
+export type Language = {
+  [key: string]: number;
+};
+
 export type Repository = {
   id: number;
   node_id: string;

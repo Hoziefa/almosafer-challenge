@@ -3,10 +3,11 @@
 import React, { UIEvent, useMemo, useRef } from 'react';
 import { type MRT_ColumnDef } from 'material-react-table';
 
-import { Avatar, Box, Chip, Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 import CommonTableRender from '../common-table-render';
 import AvatarTooltip from '@components/avatar-tooltip';
 import RepoForks from '../repo-forks';
+import RepoLanguages from '@components/repo-languages';
 
 import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 import { useReposQuery } from '@hooks/useReposQuery';
@@ -88,24 +89,12 @@ function ReposTable() {
         },
       },
       {
-        header: 'Topics',
-        accessorKey: 'topics',
+        header: 'Languages',
+        accessorKey: 'languages_url',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
-          return (
-            <Box display='flex' flexWrap='wrap' gap='0.3rem'>
-              {row.original.topics.slice(0, 3).map((topic) => (
-                <Chip
-                  label={topic}
-                  color='info'
-                  key={topic}
-                  size='medium'
-                  sx={{ fontSize: '0.9rem' }}
-                />
-              ))}
-            </Box>
-          );
+          return <RepoLanguages url={row.original.languages_url} />;
         },
       },
     ];

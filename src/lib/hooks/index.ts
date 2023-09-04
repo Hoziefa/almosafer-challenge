@@ -4,3 +4,4 @@ export * from './useAppendQueryParams';
 export * from './useUsersQuery';
 export * from './useReposQuery';
 export * from './useForksQuery';
+export * from './useLanguagesQuery';

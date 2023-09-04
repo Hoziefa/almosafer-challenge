@@ -1,5 +1,5 @@
 import { ApiEndPoints, httpClient } from '@api/config';
-import type { Repository, Result } from '@app-types';
+import type { Language, Repository, Result } from '@app-types';
 
 const URL = ApiEndPoints.githubRepositories;
 
@@ -11,6 +11,10 @@ async function getForksPerUser(url: string) {
   return await httpClient.get<Repository[]>(`${url}?per_page=3`);
 }
 
+async function getLanguagesPerUser(url: string) {
+  return await httpClient.get<Language>(url);
+}
+
 export const ReposHandler = {
   list: {
     queryKey: 'get-repositories-list',
@@ -19,5 +23,9 @@ export const ReposHandler = {
   forks: {
     queryKey: 'get-forks-list',
     request: getForksPerUser,
+  },
+  languages: {
+    queryKey: 'get-languages-list',
+    request: getLanguagesPerUser,
   },
 };
