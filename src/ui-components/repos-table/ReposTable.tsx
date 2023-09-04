@@ -39,7 +39,7 @@ function ReposTable() {
     globalFilter,
   });
 
-  const columns: Array<MRT_ColumnDef<Repository>> = useMemo(() => {
+  const columns: MRT_ColumnDef<Repository>[] = useMemo(() => {
     return [
       {
         header: '#',
@@ -52,13 +52,13 @@ function ReposTable() {
       },
       {
         header: 'Avatar',
-        accessorKey: 'owner.avatar_url',
+        accessorKey: 'avatarUrl',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
             <Avatar
-              src={row.original.owner.avatar_url}
+              src={row.original.avatarUrl}
               sx={{ width: '60px', height: '60px' }}
             />
           );
@@ -66,35 +66,33 @@ function ReposTable() {
       },
       {
         header: 'Name',
-        accessorKey: 'full_name',
+        accessorKey: 'name',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
-          return (
-            <Typography variant='body1'>{row.original.full_name}</Typography>
-          );
+          return <Typography variant='body1'>{row.original.name}</Typography>;
         },
       },
       {
         header: 'Forks',
-        accessorKey: 'forks_url',
+        accessorKey: 'forksUrl',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
             <AvatarTooltip>
-              <RepoForks url={row.original.forks_url} />
+              <RepoForks url={row.original.forksUrl} />
             </AvatarTooltip>
           );
         },
       },
       {
         header: 'Languages',
-        accessorKey: 'languages_url',
+        accessorKey: 'languagesUrl',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
-          return <RepoLanguages url={row.original.languages_url} />;
+          return <RepoLanguages url={row.original.languagesUrl} />;
         },
       },
     ];

@@ -32,7 +32,7 @@ export type Language = {
   [key: string]: number;
 };
 
-export type Repository = {
+export type RepositoryResponse = {
   id: number;
   node_id: string;
   name: string;
@@ -113,4 +113,12 @@ export type Repository = {
   watchers: number;
   default_branch: string;
   score: number;
+};
+
+export type Repository = {
+  id: number;
+  name: string;
+  forksUrl: string;
+  languagesUrl: string;
+  avatarUrl: string;
 };

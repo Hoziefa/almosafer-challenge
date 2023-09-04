@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { usePaginatedTableQuery } from '@hooks/usePaginatedTableQuery';
 import { UsersHandler } from '@api/handlers';
 import { store } from '@stores/store';
+import { User } from '@app-types';
 
 export const useUsersQuery = () => {
   const paginatedDataTableQuery = usePaginatedTableQuery({
@@ -11,7 +12,7 @@ export const useUsersQuery = () => {
       store.appStore.onOpen('Something went wrong, please try again later!'),
   });
 
-  const usersDTO = useMemo(() => {
+  const usersDTO = useMemo<User[]>(() => {
     return paginatedDataTableQuery.data.map((user) => ({
       id: user.id,
       name: user.login,

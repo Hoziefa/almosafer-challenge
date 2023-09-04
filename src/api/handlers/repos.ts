@@ -1,14 +1,17 @@
 import { ApiEndPoints, httpClient } from '@api/config';
-import type { Language, Repository, Result } from '@app-types';
+import type { Language, Result } from '@app-types';
+import { RepositoryResponse } from '@app-types';
 
 const URL = ApiEndPoints.githubRepositories;
 
 async function getRepos(queryParams: string) {
-  return await httpClient.get<Result<Repository>>(`${URL}?${queryParams}`);
+  return await httpClient.get<Result<RepositoryResponse>>(
+    `${URL}?${queryParams}`,
+  );
 }
 
 async function getForksPerUser(url: string) {
-  return await httpClient.get<Repository[]>(`${url}?per_page=3`);
+  return await httpClient.get<RepositoryResponse[]>(`${url}?per_page=3`);
 }
 
 async function getLanguagesPerUser(url: string) {
