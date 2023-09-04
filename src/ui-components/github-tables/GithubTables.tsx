@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import UsersTable from '@components/users-table';
-import ReposTable from '@components/repos-table';
 import { Box, MenuItem, TextField } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
+
+import UsersTable from '@components/users-table';
+import ReposTable from '@components/repos-table';
+
 import { useAppendQueryParams } from '@hooks/useAppendQueryParams';
 
 type Filter = 'users' | 'repositories';

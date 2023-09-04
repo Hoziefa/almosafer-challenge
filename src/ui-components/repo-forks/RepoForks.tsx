@@ -1,5 +1,4 @@
 import React from 'react';
-import { useForksQuery } from '@hooks/useForksQuery';
 import {
   Alert,
   Avatar,
@@ -8,6 +7,8 @@ import {
   Skeleton,
   Stack,
 } from '@mui/material';
+
+import { useForksQuery } from '@hooks/useForksQuery';
 
 export type RepoForksProps = {
   url: string;

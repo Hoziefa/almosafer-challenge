@@ -1,16 +1,17 @@
 'use client';
 
 import React, { UIEvent, useMemo, useRef } from 'react';
-import { type MRT_ColumnDef } from 'material-react-table';
-import { useUsersQuery } from '@hooks/useUsersQuery';
+import { observer } from 'mobx-react-lite';
 
 import { Avatar, Link, Typography } from '@mui/material';
-import { Launch } from '@mui/icons-material';
-import CommonTableRender from '../common-table-render';
+import CommonTableRender from '@components/common-table-render';
 
-import { observer } from 'mobx-react-lite';
+import { Launch } from '@mui/icons-material';
+
+import { useUsersQuery } from '@hooks/useUsersQuery';
 import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 
+import type { MRT_ColumnDef } from 'material-react-table';
 import type { User } from '@app-types';
 
 function UsersTable() {

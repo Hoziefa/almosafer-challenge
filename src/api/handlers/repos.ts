@@ -1,6 +1,5 @@
 import { ApiEndPoints, httpClient } from '@api/config';
-import type { Language, Result } from '@app-types';
-import { RepositoryResponse } from '@app-types';
+import type { Language, Result, RepositoryResponse } from '@app-types';
 
 const URL = ApiEndPoints.githubRepositories;
 

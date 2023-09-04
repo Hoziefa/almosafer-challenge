@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+
 import { SentimentDissatisfied } from '@mui/icons-material';
 
 export type EmptyHandlerProps = {
@@ -8,19 +9,13 @@ export type EmptyHandlerProps = {
 
 function EmptyHandler(props: EmptyHandlerProps) {
   return (
-    <Box
-      marginY='4rem'
-      display='flex'
-      justifyContent='center'
-      alignItems='center'
-      flexDirection='column'
-    >
+    <Stack marginY='4rem' alignItems='center'>
       <SentimentDissatisfied sx={{ fontSize: '5rem', color: 'darkgray' }} />
 
       <Typography variant='h4' color='darkgray'>
         {props.message}
       </Typography>
-    </Box>
+    </Stack>
   );
 }
 

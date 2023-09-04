@@ -1,18 +1,19 @@
 'use client';
 
 import React, { UIEvent, useMemo, useRef } from 'react';
-import { type MRT_ColumnDef } from 'material-react-table';
+import { observer } from 'mobx-react-lite';
 
 import { Avatar, Typography } from '@mui/material';
-import CommonTableRender from '../common-table-render';
+
+import CommonTableRender from '@components/common-table-render';
 import AvatarTooltip from '@components/avatar-tooltip';
-import RepoForks from '../repo-forks';
+import RepoForks from '@components/repo-forks';
 import RepoLanguages from '@components/repo-languages';
 
 import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 import { useReposQuery } from '@hooks/useReposQuery';
-import { observer } from 'mobx-react-lite';
 
+import type { MRT_ColumnDef } from 'material-react-table';
 import type { Repository } from '@app-types';
 
 function ReposTable() {
