@@ -47,7 +47,7 @@ function RepoLanguages(props: RepoLanguagesProps) {
           variant='contained'
           size='small'
           color='info'
-          sx={{ fontSize: '0.75rem' }}
+          sx={{ fontSize: '0.75rem', textTransform: 'capitalize' }}
           onClick={() => setShowLanguages(true)}
         >
           Show languages
