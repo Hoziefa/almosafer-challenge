@@ -8,7 +8,7 @@ async function getRepos(queryParams: string) {
 }
 
 async function getForksPerUser(url: string) {
-  return await httpClient.get<Repository[]>(url);
+  return await httpClient.get<Repository[]>(`${url}?per_page=3`);
 }
 
 export const ReposHandler = {

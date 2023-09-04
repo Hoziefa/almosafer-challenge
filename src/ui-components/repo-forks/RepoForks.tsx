@@ -47,7 +47,7 @@ function RepoForks(props: RepoForksProps) {
           </Alert>
         )}
 
-        {data?.slice(0, 3)?.map(({ owner, full_name }) => (
+        {data?.map(({ owner, full_name }) => (
           <Link key={owner.id} href={owner.html_url}>
             <Avatar
               src={owner.avatar_url}
