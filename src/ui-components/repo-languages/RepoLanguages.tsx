@@ -7,9 +7,23 @@ type RepoLanguagesProps = {
   url: string;
 };
 
-// Solve mounting issue
-// If it can solve by react-query if we can tell it when to make the request
-// Or move the state and the button to the repos-table
+function ChipSkeleton() {
+  return (
+    <Stack gap={1} flexDirection='row' flexWrap='wrap'>
+      <Skeleton variant='rounded' height={18}>
+        <Chip sx={{ width: '80px' }} />
+      </Skeleton>
+
+      <Skeleton variant='rounded' height={18}>
+        <Chip sx={{ width: '80px' }} />
+      </Skeleton>
+
+      <Skeleton variant='rounded' height={18}>
+        <Chip sx={{ width: '80px' }} />
+      </Skeleton>
+    </Stack>
+  );
+}
 
 function RepoLanguages(props: RepoLanguagesProps) {
   const [showLanguages, setShowLanguages] = useState(false);
@@ -17,7 +31,7 @@ function RepoLanguages(props: RepoLanguagesProps) {
   const { data, isFetching } = useLanguagesQuery(props.url, showLanguages);
 
   if (isFetching) {
-    return <Skeleton variant='rounded' height={10} />;
+    return <ChipSkeleton />;
   }
 
   return (
