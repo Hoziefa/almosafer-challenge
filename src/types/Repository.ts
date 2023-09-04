@@ -121,4 +121,5 @@ export type Repository = {
   forksUrl: string;
   languagesUrl: string;
   avatarUrl: string;
+  profileUrl?: string;
 };
