@@ -37,7 +37,7 @@ function UsersTable() {
     globalFilter,
   });
 
-  const columns: Array<MRT_ColumnDef<User>> = useMemo(() => {
+  const columns: MRT_ColumnDef<User>[] = useMemo(() => {
     return [
       {
         header: '#',
@@ -50,13 +50,13 @@ function UsersTable() {
       },
       {
         header: 'Avatar',
-        accessorKey: 'avatar_url',
+        accessorKey: 'avatarUrl',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
           return (
             <Avatar
-              src={row.original.avatar_url}
+              src={row.original.avatarUrl}
               sx={{ width: '60px', height: '60px' }}
             />
           );
@@ -64,22 +64,22 @@ function UsersTable() {
       },
       {
         header: 'Name',
-        accessorKey: 'login',
+        accessorKey: 'name',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
-          return <Typography variant='body1'>{row.original.login}</Typography>;
+          return <Typography variant='body1'>{row.original.name}</Typography>;
         },
       },
       {
         header: '',
-        accessorKey: 'html_url',
+        accessorKey: 'profileUrl',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         enableSorting: false,
         Cell: ({ row }) => {
           return (
-            <Link href={row.original.html_url} target='_blank'>
+            <Link href={row.original.profileUrl} target='_blank'>
               <Launch color='info' />
             </Link>
           );

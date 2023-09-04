@@ -1,4 +1,4 @@
-export type User = {
+export type UserResponse = {
   login: string;
   id: number;
   node_id: string;
@@ -18,4 +18,11 @@ export type User = {
   starred_url: string;
   events_url: string;
   site_admin: boolean;
+};
+
+export type User = {
+  id: number;
+  name: string;
+  avatarUrl: string;
+  profileUrl: string;
 };

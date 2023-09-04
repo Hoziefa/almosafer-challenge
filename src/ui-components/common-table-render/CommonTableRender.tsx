@@ -12,7 +12,7 @@ export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
   'data'
 > & {
   data: T[];
-  columns: Array<MRT_ColumnDef<T>>;
+  columns: MRT_ColumnDef<T>[];
   rowCount: number;
   state: object;
   onGlobalFilterChange: Dispatch<SetStateAction<string>>;

@@ -1,10 +1,10 @@
 import { ApiEndPoints, httpClient } from '@api/config';
-import type { Result, User } from '@app-types';
+import type { Result, UserResponse } from '@app-types';
 
 const URL = ApiEndPoints.githubUsers;
 
 async function getUsers(queryParams: string) {
-  return await httpClient.get<Result<User>>(`${URL}?${queryParams}`);
+  return await httpClient.get<Result<UserResponse>>(`${URL}?${queryParams}`);
 }
 
 export const UsersHandler = {

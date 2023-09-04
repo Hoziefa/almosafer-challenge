@@ -7,7 +7,7 @@ import CommonTableRender, {
 import type { User } from '@app-types';
 
 describe('<CommonTableRender /> Tests:', () => {
-  const props = {
+  const props: CommonTableRenderProps<Partial<User>> = {
     columns: [
       {
         header: '#',
@@ -17,7 +17,7 @@ describe('<CommonTableRender /> Tests:', () => {
       },
       {
         header: 'Name',
-        accessorKey: 'login',
+        accessorKey: 'name',
         enableColumnFilterModes: false,
         enableColumnFilter: false,
       },
@@ -25,21 +25,21 @@ describe('<CommonTableRender /> Tests:', () => {
     data: [
       {
         id: 1,
-        login: 'test #1',
-      } as User,
+        name: 'test #1',
+      },
       {
         id: 2,
-        login: 'test #2',
-      } as User,
+        name: 'test #2',
+      },
     ],
-    muiTableContainerProps: [],
+    muiTableContainerProps: {},
     rowCount: 2,
     state: {
       globalFilter: '',
       showGlobalFilter: true,
     },
     onGlobalFilterChange: () => {},
-  } as CommonTableRenderProps;
+  };
 
   it('should display the empty-handler when no data is provided or found', () => {
     render(<CommonTableRender {...props} data={[]} />);
