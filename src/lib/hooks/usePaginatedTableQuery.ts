@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useInfiniteQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
@@ -54,32 +54,29 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
     async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
 
-      searchParams.set('page', (pageParam * PER_PAGE).toString());
+      searchParams.set('page', (pageParam + 1).toString());
       searchParams.set('per_page', PER_PAGE.toString());
       searchParams.set('q', globalFilter || 'Q');
 
       return await props.queryFn(searchParams);
     },
     {
-      getNextPageParam: (_lastGroup, groups) => groups.length,
+      getNextPageParam: (_lastGroup, groups) => {
+        return groups.length * PER_PAGE < _lastGroup.total_count
+          ? groups.length
+          : undefined;
+      },
       keepPreviousData: true,
       refetchOnWindowFocus: false,
       onError: props.onError,
     },
   );
 
-  return useMemo(() => {
-    const data =
-      dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [];
-    const rowCount = dataTableQuery.data?.pages[0].total_count ?? 0;
-
-    return {
-      ...dataTableQuery,
-      data,
-      rowCount,
-      hasNextPage: data.length < rowCount,
-      globalFilter,
-      setGlobalFilter,
-    };
-  }, [dataTableQuery, globalFilter]);
+  return {
+    ...dataTableQuery,
+    data: dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [],
+    rowCount: dataTableQuery.data?.pages[0].total_count ?? 0,
+    globalFilter,
+    setGlobalFilter,
+  };
 };
