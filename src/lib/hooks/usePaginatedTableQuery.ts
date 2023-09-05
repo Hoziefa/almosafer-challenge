@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useInfiniteQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
@@ -68,11 +68,18 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
     },
   );
 
-  return {
-    ...dataTableQuery,
-    data: dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [],
-    rowCount: dataTableQuery.data?.pages[0].total_count ?? 0,
-    globalFilter,
-    setGlobalFilter,
-  };
+  return useMemo(() => {
+    const data =
+      dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [];
+    const rowCount = dataTableQuery.data?.pages[0].total_count ?? 0;
+
+    return {
+      ...dataTableQuery,
+      data,
+      rowCount,
+      hasNextPage: data.length < rowCount,
+      globalFilter,
+      setGlobalFilter,
+    };
+  }, [dataTableQuery, globalFilter]);
 };

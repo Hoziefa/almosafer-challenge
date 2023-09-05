@@ -33,7 +33,7 @@ function UsersTable() {
     containerRef: tableContainerRef,
     globalFilter,
     fetchNextPage,
-    shouldFetchNextPage: () => !isFetching && !isFetchingNextPage && hasNextPage!,
+    shouldFetchNextPage: () => !isFetching && !isFetchingNextPage && hasNextPage,
   });
 
   const columns: MRT_ColumnDef<User>[] = useMemo(() => {
