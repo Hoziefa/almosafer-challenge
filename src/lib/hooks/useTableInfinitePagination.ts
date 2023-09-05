@@ -3,12 +3,10 @@
 import { RefObject, useCallback, useEffect } from "react";
 
 type UseTableInfinitePagination = {
-  isFetching: boolean;
-  isFetchingNextPage: boolean;
-  hasNextPage?: boolean;
-  fetchNextPage: () => void;
   containerRef: RefObject<HTMLDivElement>;
   globalFilter: string;
+  fetchNextPage: () => void;
+  shouldFetchNextPage: () => boolean;
 };
 
 export const useDataTableInfiniteScroll = (
@@ -22,19 +20,12 @@ export const useDataTableInfiniteScroll = (
 
       if (
         scrollTop >= scrollHeight - clientHeight &&
-        !props.isFetching &&
-        !props.isFetchingNextPage &&
-        props.hasNextPage
+        props.shouldFetchNextPage()
       ) {
         props.fetchNextPage();
       }
     },
-    [
-      props.isFetching,
-      props.isFetchingNextPage,
-      props.hasNextPage,
-      props.fetchNextPage,
-    ],
+    [props.shouldFetchNextPage, props.fetchNextPage],
   );
 
   // Scroll to the top when entering a query

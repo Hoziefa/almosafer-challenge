@@ -43,7 +43,7 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
 ) => {
   const searchParams = useSearchParams();
 
-  const [globalFilter, setGlobalFilter] = useState<string>(
+  const [globalFilter, setGlobalFilter] = useState(
     searchParams.get(FILTER_KEY) ?? '',
   );
 

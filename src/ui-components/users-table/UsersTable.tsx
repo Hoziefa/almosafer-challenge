@@ -31,11 +31,9 @@ function UsersTable() {
 
   const { onInfinitePagination } = useDataTableInfiniteScroll({
     containerRef: tableContainerRef,
-    isFetching,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
     globalFilter,
+    fetchNextPage,
+    shouldFetchNextPage: () => !isFetching && !isFetchingNextPage && hasNextPage!,
   });
 
   const columns: MRT_ColumnDef<User>[] = useMemo(() => {
