@@ -3,6 +3,7 @@ import React from 'react';
 function GitBranch() {
   return (
     <svg
+      data-testid="git-branch"
       xmlns='http://www.w3.org/2000/svg'
       className='icon icon-tabler icon-tabler-git-branch'
       width='24'
