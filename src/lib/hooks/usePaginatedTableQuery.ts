@@ -61,14 +61,14 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
       return await props.queryFn(searchParams);
     },
     {
-      getNextPageParam: (_lastGroup, groups) => {
-        return groups.length * PER_PAGE < _lastGroup.total_count
-          ? groups.length
-          : undefined;
-      },
       keepPreviousData: true,
       refetchOnWindowFocus: false,
       onError: props.onError,
+      getNextPageParam: (lastGroup, groups) => {
+        return groups.length * PER_PAGE < lastGroup.total_count
+          ? groups.length
+          : undefined;
+      },
     },
   );
 
