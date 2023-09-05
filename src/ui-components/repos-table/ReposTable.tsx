@@ -35,7 +35,8 @@ function ReposTable() {
     containerRef: tableContainerRef,
     globalFilter,
     fetchNextPage,
-    shouldFetchNextPage: () => !isFetching && !isFetchingNextPage && hasNextPage,
+    shouldFetchNextPage: () =>
+      !isFetching && !isFetchingNextPage && hasNextPage!,
   });
 
   const columns: MRT_ColumnDef<Repository>[] = useMemo(() => {
@@ -69,7 +70,16 @@ function ReposTable() {
         enableColumnFilterModes: false,
         enableColumnFilter: false,
         Cell: ({ row }) => {
-          return <Typography variant='body1'>{row.original.name}</Typography>;
+          return (
+            <Typography
+              title={row.original.name}
+              variant='body1'
+              maxWidth={200}
+              noWrap
+            >
+              {row.original.name}
+            </Typography>
+          );
         },
       },
       {
