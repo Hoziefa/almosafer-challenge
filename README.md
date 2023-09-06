@@ -9,7 +9,7 @@
 - **Testing:** Components are unit-tested and integration-tested for reliability.
 - **MUI:** Components are built with **[MUI](https://mui.com)** using its latest features.
 - **MobX:** Application state-management using **[MobX](https://mobx.js.org/README.html)**
-- **CI/CD:** Continuous Integration and Deployment using GitHub Actions for continuous integration and tests are automatically executed after each pull request to ensure the code's reliability.
+- **CI/CD:** Using GitHub Actions for continuous integration. Tests are automatically executed after each pull request to ensure the code's reliability.
 
 ## Table of Contents
 

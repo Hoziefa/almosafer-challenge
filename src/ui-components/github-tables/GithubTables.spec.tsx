@@ -1,6 +1,12 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { screen } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
+
+import { renderWithQuery } from '@test-utils/global-renders';
+import {
+  createMockRouter,
+  MockRouterWrapper,
+} from '@test-utils/create-router-mock';
 
 import GithubTables from './GithubTables';
 
@@ -17,25 +23,22 @@ jest.mock('next/navigation', () => {
   };
 });
 
-const renderWithQuery = (queryClient: QueryClient) => {
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <GithubTables />
-    </QueryClientProvider>,
-  );
-};
-
 describe('<GithubTables /> Tests:', () => {
   const queryClient = new QueryClient();
+  const router = createMockRouter();
 
   it('should contain the types-filter field', () => {
-    renderWithQuery(queryClient);
+    renderWithQuery(<GithubTables />, queryClient, {
+      wrapper: (props) => <MockRouterWrapper {...props} router={router} />,
+    });
 
     screen.getByLabelText('Select a type');
   });
 
   it('should integrate with the table', () => {
-    renderWithQuery(queryClient);
+    renderWithQuery(<GithubTables />, queryClient, {
+      wrapper: (props) => <MockRouterWrapper {...props} router={router} />,
+    });
 
     screen.getByRole('table');
   });
