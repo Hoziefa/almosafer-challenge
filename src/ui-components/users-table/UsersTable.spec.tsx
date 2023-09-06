@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { screen } from '@testing-library/react';
 import { QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { renderWithQuery } from '@test-utils/global-renders';
@@ -12,23 +13,13 @@ jest.mock('@tanstack/react-query', () => ({
   useInfiniteQuery: jest.fn(),
 }));
 
-jest.mock('next/navigation', () => {
-  return {
-    ...jest.requireActual('next/navigation'),
-    useRouter: jest.fn().mockReturnValue({
-      push: jest.fn(),
-    }),
-    usePathname: jest.fn(),
-    useSearchParams: jest.fn().mockReturnValue({
-      get: () => '',
-    }),
-  };
-});
-
 describe('<UsersTable /> Tests:', () => {
   const queryClient = new QueryClient();
 
   beforeAll(() => {
+    (useSearchParams as Mock).mockReturnValue({ get: jest.fn() });
+    (useRouter as Mock).mockReturnValue({ push: jest.fn() });
+
     (useInfiniteQuery as Mock).mockReturnValue({
       data: {
         pages: [
