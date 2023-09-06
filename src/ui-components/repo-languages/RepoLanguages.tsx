@@ -56,7 +56,7 @@ function RepoLanguages(props: RepoLanguagesProps) {
 
       <Stack flexWrap='wrap' flexDirection='row' gap='0.3rem'>
         {showLanguages &&
-          data?.map((language) => (
+          data.map((language) => (
             <Chip
               key={language}
               label={language}

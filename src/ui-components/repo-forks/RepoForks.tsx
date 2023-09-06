@@ -42,13 +42,13 @@ function RepoForks(props: RepoForksProps) {
   return (
     <Stack direction='row' gap={2}>
       <AvatarGroup>
-        {data?.length === 0 && (
+        {data.length === 0 && (
           <Alert severity='error' color='warning'>
             No forks found!
           </Alert>
         )}
 
-        {data?.map(({ id, avatarUrl, name, profileUrl }) => (
+        {data.map(({ id, avatarUrl, name, profileUrl }) => (
           <Link key={id} href={profileUrl} target='_blank'>
             <Avatar
               src={avatarUrl}
