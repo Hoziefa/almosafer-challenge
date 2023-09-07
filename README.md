@@ -1,6 +1,6 @@
 # Almosafer-Challenge
 
-**This project is a web application built with Next.js, React, and TypeScript. It allows users to filter and view repositories and users. The README provides comprehensive instructions on how to set up the project, run it locally, run unit tests.**
+This project is a web application built with Next.js, React, and TypeScript. It allows users to filter and view repositories and users. The README provides comprehensive instructions on how to set up the project, run it locally, run unit tests.
 
 ## Features
 
