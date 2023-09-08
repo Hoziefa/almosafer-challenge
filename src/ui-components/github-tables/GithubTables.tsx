@@ -26,9 +26,8 @@ function GithubTables() {
   const [filter, setFilter] = useState<Filter>(
     (searchParams.get(FILTER_KEY) as Filter) ?? 'users',
   );
-  const [resetQParams, setResetQParams] = useState(false);
 
-  useAppendQueryParams(FILTER_KEY, filter, resetQParams);
+  const { onResetQueryParams } = useAppendQueryParams(FILTER_KEY, filter);
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
@@ -37,10 +36,14 @@ function GithubTables() {
     };
   }, []);
 
-  const onFilterChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setResetQParams(((prevState) => !prevState));
-    setFilter(event.target.value as Filter);
-  }, []);
+  const onFilterChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      onResetQueryParams();
+
+      setFilter(event.target.value as Filter);
+    },
+    [onResetQueryParams],
+  );
 
   return (
     <>
