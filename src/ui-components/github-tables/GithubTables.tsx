@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { Box, MenuItem, TextField } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 
@@ -26,14 +26,20 @@ function GithubTables() {
   const [filter, setFilter] = useState<Filter>(
     (searchParams.get(FILTER_KEY) as Filter) ?? 'users',
   );
+  const [resetQParams, setResetQParams] = useState(false);
 
-  useAppendQueryParams(FILTER_KEY, filter);
+  useAppendQueryParams(FILTER_KEY, filter, resetQParams);
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
       users: <UsersTable />,
       repositories: <ReposTable />,
     };
+  }, []);
+
+  const onFilterChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setResetQParams(((prevState) => !prevState));
+    setFilter(event.target.value as Filter);
   }, []);
 
   return (
@@ -45,7 +51,7 @@ function GithubTables() {
           fullWidth
           size='small'
           value={filter}
-          onChange={(event) => setFilter(event.target.value as Filter)}
+          onChange={onFilterChange}
         >
           {FILTERS.map((option) => (
             <MenuItem key={option.value} value={option.value}>
