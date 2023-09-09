@@ -60,8 +60,6 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
       return await props.queryFn(searchParams);
     },
     {
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
       onError: props.onError,
       getNextPageParam: (lastGroup, groups) => {
         return groups.length * PER_PAGE < lastGroup.total_count
