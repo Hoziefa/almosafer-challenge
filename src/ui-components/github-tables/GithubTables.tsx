@@ -2,12 +2,11 @@
 
 import React, { useMemo, useState } from 'react';
 import { Box, MenuItem, TextField } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
 
 import UsersTable from '@components/users-table';
 import ReposTable from '@components/repos-table';
 
-import { useAppendQueryParams } from '@hooks/useAppendQueryParams';
+import { useQueryParams } from '@hooks/useQueryParams';
 
 type Filter = 'users' | 'repositories';
 
@@ -22,11 +21,11 @@ const FILTER_KEY = 'type';
 const DEFAULT_VALUE = 'users';
 
 function GithubTables() {
-  const searchParams = useSearchParams();
+  const { useReadQueryParams, useAppendQueryParams } = useQueryParams();
 
-  const [filter, setFilter] = useState<Filter>(
-    (searchParams.get(FILTER_KEY) as Filter) ?? DEFAULT_VALUE,
-  );
+  const { queryValue } = useReadQueryParams(FILTER_KEY, DEFAULT_VALUE);
+
+  const [filter, setFilter] = useState<Filter>(queryValue as Filter);
 
   useAppendQueryParams(FILTER_KEY, filter);
 
