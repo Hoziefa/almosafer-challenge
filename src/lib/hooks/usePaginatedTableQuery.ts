@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useInfiniteQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
@@ -47,11 +47,7 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
     searchParams.get(FILTER_KEY) ?? '',
   );
 
-  const { isQueryReset } = useAppendQueryParams(FILTER_KEY, globalFilter);
-
-  useEffect(() => {
-    setGlobalFilter('');
-  }, [isQueryReset]);
+  useAppendQueryParams(FILTER_KEY, globalFilter);
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
     [props.queryKey, globalFilter],
