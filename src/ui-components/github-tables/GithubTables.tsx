@@ -21,13 +21,13 @@ const FILTER_KEY = 'type';
 const DEFAULT_VALUE = 'users';
 
 function GithubTables() {
-  const { useReadQueryParams, useAppendQueryParams } = useQueryParams();
+  const { useRead, useAppend } = useQueryParams();
 
-  const { queryValue } = useReadQueryParams(FILTER_KEY, DEFAULT_VALUE);
+  const { queryValue } = useRead(FILTER_KEY, DEFAULT_VALUE);
 
   const [filter, setFilter] = useState<Filter>(queryValue as Filter);
 
-  useAppendQueryParams(FILTER_KEY, filter);
+  useAppend(FILTER_KEY, filter);
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {

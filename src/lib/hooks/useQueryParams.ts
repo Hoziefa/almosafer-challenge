@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-const useReadQueryParams = (queryKey: string, fallbackValue = '') => {
+const useRead = (queryKey: string, fallbackValue = '') => {
   const searchParams = useSearchParams();
 
   return {
@@ -9,7 +9,7 @@ const useReadQueryParams = (queryKey: string, fallbackValue = '') => {
   };
 };
 
-const useAppendQueryParams = (queryKey: string, queryValue: string) => {
+const useAppend = (queryKey: string, queryValue: string) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -26,5 +26,5 @@ const useAppendQueryParams = (queryKey: string, queryValue: string) => {
 };
 
 export const useQueryParams = () => {
-  return { useReadQueryParams, useAppendQueryParams };
+  return { useRead, useAppend };
 };
