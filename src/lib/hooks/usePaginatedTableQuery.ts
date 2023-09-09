@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useInfiniteQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
 
@@ -41,11 +40,7 @@ const FILTER_KEY = 'query';
 export const usePaginatedTableQuery = <T extends Record<string, any>>(
   props: QueryProps<T>,
 ) => {
-  const searchParams = useSearchParams();
-
-  const [globalFilter, setGlobalFilter] = useState(
-    searchParams.get(FILTER_KEY) ?? '',
-  );
+  const [globalFilter, setGlobalFilter] = useState('');
 
   useAppendQueryParams(FILTER_KEY, globalFilter);
 
