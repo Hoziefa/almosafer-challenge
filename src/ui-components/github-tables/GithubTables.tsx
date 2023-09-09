@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { Box, MenuItem, TextField } from '@mui/material';
 
 import UsersTable from '@components/users-table';
 import ReposTable from '@components/repos-table';
 
-import { useAppendQueryParams } from '@hooks/useAppendQueryParams';
+import { usePersistData } from '@hooks/usePersistData';
 
 type Filter = 'users' | 'repositories';
 
@@ -21,9 +21,11 @@ const FILTER_KEY = 'type';
 const DEFAULT_VALUE = 'users';
 
 function GithubTables() {
-  const [filter, setFilter] = useState<Filter>(DEFAULT_VALUE);
+  const { readData, persistData, clearData } = usePersistData();
 
-  useAppendQueryParams(FILTER_KEY, filter);
+  const [filter, setFilter] = useState<Filter>(
+    (readData(FILTER_KEY) as Filter) ?? DEFAULT_VALUE,
+  );
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
@@ -31,6 +33,17 @@ function GithubTables() {
       repositories: <ReposTable />,
     };
   }, []);
+
+  const onFilterChange = useCallback(
+    ({ target }: ChangeEvent<HTMLInputElement>) => {
+      clearData();
+
+      setFilter(target.value as Filter);
+
+      persistData(FILTER_KEY, target.value);
+    },
+    [clearData, persistData],
+  );
 
   return (
     <>
@@ -41,7 +54,7 @@ function GithubTables() {
           fullWidth
           size='small'
           value={filter}
-          onChange={({ target }) => setFilter(target.value as Filter)}
+          onChange={onFilterChange}
         >
           {FILTERS.map((option) => (
             <MenuItem key={option.value} value={option.value}>
