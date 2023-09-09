@@ -21,7 +21,7 @@ const FILTER_KEY = 'type';
 const DEFAULT_VALUE = 'users';
 
 function GithubTables() {
-  const { readQuery, appendQuery } = useQueryParams();
+  const { readQuery, appendQuery, clearQueries } = useQueryParams();
 
   const queryValue = readQuery(FILTER_KEY, DEFAULT_VALUE);
 
@@ -45,7 +45,11 @@ function GithubTables() {
           fullWidth
           size='small'
           value={filter}
-          onChange={({ target }) => setFilter(target.value as Filter)}
+          onChange={({ target }) => {
+            clearQueries();
+
+            setFilter(target.value as Filter);
+          }}
         >
           {FILTERS.map((option) => (
             <MenuItem key={option.value} value={option.value}>

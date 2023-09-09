@@ -8,6 +8,7 @@ export const useQueryParams = () => {
 
   const [localQueryValue, setLocalQueryValue] = useState('');
   const [localQueryKey, setLocalQueryKey] = useState('');
+  const [shouldClearQueries, setShouldClearQueries] = useState(false);
 
   const readQuery = useCallback(
     (queryKey: string, fallbackValue = '') => {
@@ -26,6 +27,10 @@ export const useQueryParams = () => {
     [localQueryValue],
   );
 
+  const clearQueries = useCallback(() => {
+    setShouldClearQueries(true);
+  }, []);
+
   // Handles the adding and deleting
   useEffect(() => {
     const url = new URLSearchParams(searchParams);
@@ -33,8 +38,21 @@ export const useQueryParams = () => {
     if (localQueryValue) url.set(localQueryKey, localQueryValue);
     else url.delete(localQueryKey);
 
-    router.push(`${pathname}?${url.toString()}`);
-  }, [localQueryKey, localQueryValue, pathname, router, searchParams]);
+    router.push(
+      shouldClearQueries ? pathname : `${pathname}?${url.toString()}`,
+    );
 
-  return { readQuery, appendQuery };
+    setTimeout(() => {
+      setShouldClearQueries(false);
+    }, 300);
+  }, [
+    shouldClearQueries,
+    localQueryKey,
+    localQueryValue,
+    pathname,
+    router,
+    searchParams,
+  ]);
+
+  return { readQuery, appendQuery, clearQueries };
 };
