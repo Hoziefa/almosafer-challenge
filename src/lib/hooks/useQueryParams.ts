@@ -1,27 +1,13 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-
-const initialState = {
-  queryKey: '',
-  queryValue: '',
-};
-
-const reducer = (
-  state: typeof initialState,
-  action: { type: string; payload: string },
-) => {
-  if (state.queryValue !== action.payload)
-    return { ...state, queryKey: action.type, queryValue: action.payload };
-
-  return state;
-};
 
 export const useQueryParams = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [localQueryValue, setLocalQueryValue] = useState('');
+  const [localQueryKey, setLocalQueryKey] = useState('');
 
   const readQuery = useCallback(
     (queryKey: string, fallbackValue = '') => {
@@ -32,22 +18,23 @@ export const useQueryParams = () => {
 
   const appendQuery = useCallback(
     (queryKey: string, queryValue: string) => {
-      if (state.queryValue === queryValue) return;
+      if (localQueryValue === queryValue) return;
 
-      dispatch({ type: queryKey, payload: queryValue });
+      setLocalQueryKey(queryKey);
+      setLocalQueryValue(queryValue);
     },
-    [state.queryValue],
+    [localQueryValue],
   );
 
   // Handles the adding and deleting
   useEffect(() => {
     const url = new URLSearchParams(searchParams);
 
-    if (state.queryValue) url.set(state.queryKey, state.queryValue);
-    else url.delete(state.queryKey);
+    if (localQueryValue) url.set(localQueryKey, localQueryValue);
+    else url.delete(localQueryKey);
 
     router.push(`${pathname}?${url.toString()}`);
-  }, [state.queryKey, state.queryValue, pathname, router, searchParams]);
+  }, [localQueryKey, localQueryValue, pathname, router, searchParams]);
 
   return { readQuery, appendQuery };
 };
