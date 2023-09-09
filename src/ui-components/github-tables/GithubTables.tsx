@@ -2,11 +2,12 @@
 
 import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { Box, MenuItem, TextField } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
 
 import UsersTable from '@components/users-table';
 import ReposTable from '@components/repos-table';
 
-import { usePersistData } from '@hooks/usePersistData';
+import { useAppendQueryParams } from '@hooks/useAppendQueryParams';
 
 type Filter = 'users' | 'repositories';
 
@@ -18,14 +19,15 @@ const FILTERS = [
 ];
 
 const FILTER_KEY = 'type';
-const DEFAULT_VALUE = 'users';
 
 function GithubTables() {
-  const { readData, persistData, clearData } = usePersistData();
+  const searchParams = useSearchParams();
 
   const [filter, setFilter] = useState<Filter>(
-    (readData(FILTER_KEY) as Filter) ?? DEFAULT_VALUE,
+    (searchParams.get(FILTER_KEY) as Filter) ?? 'users',
   );
+
+  const { onResetQueries } = useAppendQueryParams(FILTER_KEY, filter);
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
@@ -35,14 +37,12 @@ function GithubTables() {
   }, []);
 
   const onFilterChange = useCallback(
-    ({ target }: ChangeEvent<HTMLInputElement>) => {
-      clearData();
+    (event: ChangeEvent<HTMLInputElement>) => {
+      onResetQueries(true);
 
-      setFilter(target.value as Filter);
-
-      persistData(FILTER_KEY, target.value);
+      setFilter(event.target.value as Filter);
     },
-    [clearData, persistData],
+    [onResetQueries],
   );
 
   return (
