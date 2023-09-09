@@ -1,5 +1,3 @@
-'use client';
-
 import React, { UIEvent, useMemo, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 

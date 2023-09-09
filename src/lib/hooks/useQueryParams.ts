@@ -44,7 +44,7 @@ export const useQueryParams = () => {
 
     setTimeout(() => {
       setShouldClearQueries(false);
-    }, 300);
+    }, 50);
   }, [
     shouldClearQueries,
     localQueryKey,
