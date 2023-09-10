@@ -21,13 +21,9 @@ const FILTER_KEY = 'type';
 const DEFAULT_VALUE = 'users';
 
 function GithubTables() {
-  const { readQuery, appendQuery, clearQueries } = useQueryParams();
+  const [filter, setFilter] = useState<Filter>('users');
 
-  const queryValue = readQuery(FILTER_KEY, DEFAULT_VALUE);
-
-  const [filter, setFilter] = useState<Filter>(queryValue as Filter);
-
-  appendQuery(FILTER_KEY, filter);
+  useQueryParams(FILTER_KEY, filter, setFilter, DEFAULT_VALUE);
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
@@ -46,8 +42,6 @@ function GithubTables() {
           size='small'
           value={filter}
           onChange={({ target }) => {
-            clearQueries();
-
             setFilter(target.value as Filter);
           }}
         >

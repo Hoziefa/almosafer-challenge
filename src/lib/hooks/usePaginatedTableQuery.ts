@@ -40,13 +40,9 @@ const FILTER_KEY = 'query';
 export const usePaginatedTableQuery = <T extends Record<string, any>>(
   props: QueryProps<T>,
 ) => {
-  const { readQuery, appendQuery } = useQueryParams();
+  const [globalFilter, setGlobalFilter] = useState('');
 
-  const queryValue = readQuery(FILTER_KEY, '');
-
-  const [globalFilter, setGlobalFilter] = useState(queryValue);
-
-  appendQuery(FILTER_KEY, globalFilter);
+  useQueryParams(FILTER_KEY, globalFilter, setGlobalFilter, '');
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
     [props.queryKey, globalFilter],
