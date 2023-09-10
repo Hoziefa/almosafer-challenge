@@ -28,7 +28,7 @@ export const useQueryParams = (
   useEffect(() => {
     const url = new URLSearchParams(searchParams);
 
-    if (url.get(queryKey) === queryValue) return;
+    if (queryValue === '' || url.get(queryKey) === queryValue) return;
 
     if (queryValue) url.set(queryKey, queryValue);
     else url.delete(queryKey);
