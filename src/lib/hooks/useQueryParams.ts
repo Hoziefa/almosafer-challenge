@@ -6,8 +6,8 @@ export const useQueryParams = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [localQueryValue, setLocalQueryValue] = useState('');
-  const [localQueryKey, setLocalQueryKey] = useState('');
+  const [queryParamsKey, setQueryParamsKey] = useState('');
+  const [queryParamsValue, setQueryParamsValue] = useState('');
   const [shouldClearQueries, setShouldClearQueries] = useState(false);
 
   const readQuery = useCallback(
@@ -19,12 +19,12 @@ export const useQueryParams = () => {
 
   const appendQuery = useCallback(
     (queryKey: string, queryValue: string) => {
-      if (localQueryValue === queryValue) return;
+      if (queryParamsValue === queryValue) return;
 
-      setLocalQueryKey(queryKey);
-      setLocalQueryValue(queryValue);
+      setQueryParamsKey(queryKey);
+      setQueryParamsValue(queryValue);
     },
-    [localQueryValue],
+    [queryParamsValue],
   );
 
   const clearQueries = useCallback(() => {
@@ -35,8 +35,8 @@ export const useQueryParams = () => {
   useEffect(() => {
     const url = new URLSearchParams(searchParams);
 
-    if (localQueryValue) url.set(localQueryKey, localQueryValue);
-    else url.delete(localQueryKey);
+    if (queryParamsValue) url.set(queryParamsKey, queryParamsValue);
+    else url.delete(queryParamsKey);
 
     router.push(
       shouldClearQueries ? pathname : `${pathname}?${url.toString()}`,
@@ -44,11 +44,11 @@ export const useQueryParams = () => {
 
     setTimeout(() => {
       setShouldClearQueries(false);
-    }, 50);
+    }, 150);
   }, [
     shouldClearQueries,
-    localQueryKey,
-    localQueryValue,
+    queryParamsKey,
+    queryParamsValue,
     pathname,
     router,
     searchParams,
