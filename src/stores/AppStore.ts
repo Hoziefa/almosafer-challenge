@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx';
 export default class AppStore {
   public showSnackbar = false;
 
-  public duration?: number = 2000;
+  public duration = 2000;
 
   public message = '';
 
@@ -11,10 +11,10 @@ export default class AppStore {
     makeAutoObservable(this);
   }
 
-  public onOpen = (message: string, duration?: number): void => {
+  public onOpen = (message: string, duration = this.duration): void => {
     this.showSnackbar = true;
     this.message = message;
-    this.duration ??= duration;
+    this.duration = duration;
   };
 
   public onClose = (): void => {
