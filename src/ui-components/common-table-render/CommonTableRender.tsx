@@ -6,6 +6,7 @@ import {
 } from 'material-react-table';
 
 import EmptyHandler from '@components/empty-handler';
+import { useMediaQuery } from '@mui/material';
 
 export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
   MaterialReactTableProps<T>,
@@ -22,6 +23,8 @@ export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
 function CommonTableRender<T extends Record<string, any> = {}>(
   props: CommonTableRenderProps<T>,
 ) {
+  const isSmScreen = useMediaQuery('(min-width:500px)');
+
   return (
     <MaterialReactTable<T>
       {...props}
@@ -44,7 +47,7 @@ function CommonTableRender<T extends Record<string, any> = {}>(
         fullWidth: true,
         size: 'small',
         margin: 'dense',
-        sx: { maxWidth: '460px' },
+        sx: { maxWidth: '460px', width: isSmScreen ? '452px' : 'auto' },
       }}
       renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />
