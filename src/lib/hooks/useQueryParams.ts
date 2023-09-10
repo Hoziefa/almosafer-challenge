@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export const useQueryParams = (
@@ -11,9 +13,15 @@ export const useQueryParams = (
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const [shouldClearQueries, setShouldClearQueries] = useState(false);
+
+  const clearQueries = useCallback(() => {
+    setShouldClearQueries(true);
+  }, []);
+
+  // Handle init the component state with the persisted query
   useEffect(() => {
     setQueryValue(searchParams.get(queryKey) ?? fallbackValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handles the adding and deleting
@@ -25,6 +33,12 @@ export const useQueryParams = (
     if (queryValue) url.set(queryKey, queryValue);
     else url.delete(queryKey);
 
-    router.push(`${pathname}?${url.toString()}`);
-  }, [queryValue, queryKey, pathname, router, searchParams]);
+    router.push(
+      shouldClearQueries ? pathname : `${pathname}?${url.toString()}`,
+    );
+
+    setShouldClearQueries(false);
+  }, [queryKey, queryValue]);
+
+  return { clearQueries };
 };
