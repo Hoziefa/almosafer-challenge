@@ -1,7 +1,7 @@
 'use client';
 
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { Box, MenuItem, TextField } from '@mui/material';
+import React, { useMemo, useState } from 'react';
+import { Button, MenuItem, Stack, TextField } from '@mui/material';
 
 import UsersTable from '@components/users-table';
 import ReposTable from '@components/repos-table';
@@ -37,25 +37,16 @@ function GithubTables() {
     };
   }, []);
 
-  const onFilterChange = useCallback(
-    ({ target }: ChangeEvent<HTMLInputElement>) => {
-      clearQueries();
-
-      setFilter(target.value as Filter);
-    },
-    [clearQueries],
-  );
-
   return (
     <>
-      <Box mb={2} maxWidth='460px'>
+      <Stack mb={2} flexDirection='row' gap={10} justifyContent='space-between'>
         <TextField
           label='Select a type'
           select
-          fullWidth
           size='small'
           value={filter}
-          onChange={onFilterChange}
+          sx={{ minWidth: '45%' }}
+          onChange={({ target }) => setFilter(target.value as Filter)}
         >
           {FILTERS.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -63,7 +54,11 @@ function GithubTables() {
             </MenuItem>
           ))}
         </TextField>
-      </Box>
+
+        <Button onClick={clearQueries} variant='contained'>
+          Clear
+        </Button>
+      </Stack>
 
       {renderedTable[filter]}
     </>

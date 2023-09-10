@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export const useQueryParams = (
@@ -13,31 +11,34 @@ export const useQueryParams = (
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [shouldClearQueries, setShouldClearQueries] = useState(false);
-
   const clearQueries = useCallback(() => {
-    setShouldClearQueries(true);
-  }, []);
+    router.push(pathname);
+  }, [router, pathname]);
+
+  useEffect(() => {
+    if (searchParams.get(queryKey)) return;
+
+    setQueryValue(fallbackValue);
+  }, [fallbackValue, queryKey, searchParams, setQueryValue]);
 
   // Handle init the component state with the persisted query
   useEffect(() => {
     setQueryValue(searchParams.get(queryKey) ?? fallbackValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handles the adding and deleting
   useEffect(() => {
     const url = new URLSearchParams(searchParams);
 
-    if (queryValue === fallbackValue || url.get(queryKey) === queryValue) return;
+    if (queryValue === fallbackValue || url.get(queryKey) === queryValue)
+      return;
 
     if (queryValue) url.set(queryKey, queryValue);
     else url.delete(queryKey);
 
-    router.push(
-      shouldClearQueries ? pathname : `${pathname}?${url.toString()}`,
-    );
-
-    setShouldClearQueries(false);
+    router.push(`${pathname}?${url.toString()}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryKey, queryValue]);
 
   return { clearQueries };

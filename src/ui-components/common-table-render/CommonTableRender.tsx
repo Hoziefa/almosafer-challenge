@@ -23,7 +23,7 @@ export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
 function CommonTableRender<T extends Record<string, any> = {}>(
   props: CommonTableRenderProps<T>,
 ) {
-  const isSmScreen = useMediaQuery('(min-width:500px)');
+  const isSmScreen = useMediaQuery('(min-width:600px)');
 
   return (
     <MaterialReactTable<T>
@@ -47,7 +47,7 @@ function CommonTableRender<T extends Record<string, any> = {}>(
         fullWidth: true,
         size: 'small',
         margin: 'dense',
-        sx: { maxWidth: '460px', width: isSmScreen ? '452px' : 'auto' },
+        sx: { width: isSmScreen ? '510px' : 'auto' },
       }}
       renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />
