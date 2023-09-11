@@ -37,7 +37,7 @@ const FILTERS = [
 function TableFilters(props: TableFiltersProps) {
   return (
     <Stack
-      px={1.5}
+      px={1}
       py={2}
       flexDirection='row'
       gap={3}
