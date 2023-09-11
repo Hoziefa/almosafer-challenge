@@ -22,9 +22,9 @@ export const useQueryParams = (filters: { [key: string]: string }) => {
 
     router.push(`${pathname}?${url.toString()}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, [JSON.stringify(filters)]);
 
   return {
-    queryParams: queryParams,
+    queryParams,
   };
 };

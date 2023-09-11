@@ -8,20 +8,13 @@ import AvatarTooltip from '@components/avatar-tooltip';
 import RepoForks from '@components/repo-forks';
 import RepoLanguages from '@components/repo-languages';
 
-import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 import { useReposQuery } from '@hooks/useReposQuery';
+import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 
 import type { MRT_ColumnDef } from 'material-react-table';
 import type { Repository } from '@app-types';
 
-type ReposTableProps = {
-  globalFilter: string;
-  filter: string;
-  setGlobalFilter: Function;
-  setFilter: Function;
-};
-
-function ReposTable(props: ReposTableProps) {
+function ReposTable() {
   const {
     data,
     rowCount,
@@ -30,13 +23,14 @@ function ReposTable(props: ReposTableProps) {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useReposQuery(props.globalFilter);
+    searchQuery,
+  } = useReposQuery();
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const { onInfinitePagination } = useDataTableInfiniteScroll({
     containerRef: tableContainerRef,
-    globalFilter: props.globalFilter,
+    searchQuery,
     fetchNextPage,
     shouldFetchNextPage: () =>
       !isFetching && !isFetchingNextPage && hasNextPage!,
@@ -128,10 +122,6 @@ function ReposTable(props: ReposTableProps) {
 
   return (
     <CommonTableRender
-      globalFilter={props.globalFilter}
-      filter={props.filter}
-      setGlobalFilter={props.setGlobalFilter}
-      setFilter={props.setFilter}
       columns={columns}
       data={data}
       rowCount={rowCount}

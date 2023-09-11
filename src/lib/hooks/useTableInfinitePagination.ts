@@ -4,7 +4,7 @@ import { RefObject, useCallback, useEffect } from "react";
 
 type UseTableInfinitePagination = {
   containerRef: RefObject<HTMLDivElement>;
-  globalFilter: string;
+  searchQuery: string;
   fetchNextPage: () => void;
   shouldFetchNextPage: () => boolean;
 };
@@ -31,7 +31,7 @@ export const useDataTableInfiniteScroll = (
   // Scroll to the top when entering a query
   useEffect(() => {
     props.containerRef.current?.scrollTo?.({ top: 0 });
-  }, [props.globalFilter]);
+  }, [props.searchQuery]);
 
   return {
     onInfinitePagination,

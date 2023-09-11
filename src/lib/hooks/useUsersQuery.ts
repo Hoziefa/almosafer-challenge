@@ -4,11 +4,10 @@ import { UsersHandler } from '@api/handlers';
 import { store } from '@stores/store';
 import { User } from '@app-types';
 
-export const useUsersQuery = (globalFilter: string) => {
+export const useUsersQuery = () => {
   const paginatedDataTableQuery = usePaginatedTableQuery({
     queryFn: UsersHandler.list.request,
     queryKey: UsersHandler.list.queryKey,
-    globalFilter,
     onError: () =>
       store.appStore.onOpen('Something went wrong, please try again later!'),
   });

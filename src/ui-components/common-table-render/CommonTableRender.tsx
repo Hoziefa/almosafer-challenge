@@ -8,33 +8,29 @@ import {
 import { InputAdornment, MenuItem, Stack, TextField } from '@mui/material';
 import EmptyHandler from '@components/empty-handler';
 
-import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
+import { useFilters } from '@contexts/FiltersContext';
 
-type TableFiltersProps = {
-  globalFilter: string;
-  setGlobalFilter: Function;
-  filter: string;
-  setFilter: Function;
-};
+import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
 
 export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
   MaterialReactTableProps<T>,
   'data'
-> &
-  TableFiltersProps & {
-    data: T[];
-    columns: MRT_ColumnDef<T>[];
-    rowCount: number;
-    state: object;
-    muiTableContainerProps: object;
-  };
+> & {
+  data: T[];
+  columns: MRT_ColumnDef<T>[];
+  rowCount: number;
+  state: object;
+  muiTableContainerProps: object;
+};
 
 const FILTERS = [
   { label: 'Users', value: 'users' },
   { label: 'Repositories', value: 'repositories' },
 ];
 
-function TableFilters(props: TableFiltersProps) {
+function TableFilters() {
+  const { searchQuery, filter, setSearchQuery, setFilter } = useFilters();
+
   return (
     <Stack
       px={1}
@@ -48,10 +44,10 @@ function TableFilters(props: TableFiltersProps) {
         id='search-query'
         size='small'
         variant='outlined'
-        placeholder={`Search ${props.filter}`}
+        placeholder={`Search ${filter}`}
         sx={{ minWidth: '60%' }}
-        value={props.globalFilter}
-        onChange={({ target }) => props.setGlobalFilter(target.value)}
+        value={searchQuery}
+        onChange={({ target }) => setSearchQuery(target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>
@@ -62,7 +58,7 @@ function TableFilters(props: TableFiltersProps) {
             <InputAdornment
               position='end'
               sx={{ cursor: 'pointer' }}
-              onClick={() => props.setGlobalFilter('')}
+              onClick={() => setSearchQuery('')}
             >
               <ClearIcon />
             </InputAdornment>
@@ -76,11 +72,11 @@ function TableFilters(props: TableFiltersProps) {
         select
         size='small'
         sx={{ minWidth: '30%' }}
-        value={props.filter}
+        value={filter}
         onChange={({ target }) => {
-          props.setGlobalFilter('');
+          setSearchQuery('');
 
-          props.setFilter(target.value);
+          setFilter(target.value as any);
         }}
       >
         {FILTERS.map((option) => (
@@ -102,7 +98,6 @@ function CommonTableRender<T extends Record<string, any> = {}>(
       positionGlobalFilter='left'
       manualFiltering
       manualSorting
-      renderTopToolbarCustomActions={() => <TableFilters {...props} />}
       enableGlobalFilter
       enableTopToolbar
       enableFilterMatchHighlighting={false}
@@ -114,6 +109,7 @@ function CommonTableRender<T extends Record<string, any> = {}>(
       enableColumnActions={false}
       enableBottomToolbar={false}
       enableSorting={false}
+      renderTopToolbarCustomActions={() => <TableFilters />}
       renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />
   );

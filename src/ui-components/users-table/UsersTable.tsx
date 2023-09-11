@@ -12,14 +12,7 @@ import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 import type { MRT_ColumnDef } from 'material-react-table';
 import type { User } from '@app-types';
 
-type UsersTableProps = {
-  globalFilter: string;
-  filter: string;
-  setGlobalFilter: Function;
-  setFilter: Function;
-};
-
-function UsersTable(props: UsersTableProps) {
+function UsersTable() {
   const {
     data,
     rowCount,
@@ -28,13 +21,14 @@ function UsersTable(props: UsersTableProps) {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useUsersQuery(props.globalFilter);
+    searchQuery,
+  } = useUsersQuery();
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const { onInfinitePagination } = useDataTableInfiniteScroll({
     containerRef: tableContainerRef,
-    globalFilter: props.globalFilter,
+    searchQuery,
     fetchNextPage,
     shouldFetchNextPage: () =>
       !isFetching && !isFetchingNextPage && hasNextPage!,
@@ -118,10 +112,6 @@ function UsersTable(props: UsersTableProps) {
 
   return (
     <CommonTableRender
-      globalFilter={props.globalFilter}
-      filter={props.filter}
-      setGlobalFilter={props.setGlobalFilter}
-      setFilter={props.setFilter}
       columns={columns}
       data={data}
       rowCount={rowCount}

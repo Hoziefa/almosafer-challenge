@@ -7,6 +7,7 @@ import {
   MRT_SortingState,
 } from 'material-react-table';
 
+import { useFilters } from '@contexts/FiltersContext';
 import { useDebounce } from '@hooks/useDebounce';
 
 import type { QueryKey } from '@tanstack/query-core';
@@ -31,7 +32,6 @@ export type QueryProps<
     initialData?: () => undefined;
   };
   onError?: (err: Error) => void;
-  globalFilter: string;
 };
 
 const PER_PAGE = 10;
@@ -39,16 +39,17 @@ const PER_PAGE = 10;
 export const usePaginatedTableQuery = <T extends Record<string, any>>(
   props: QueryProps<T>,
 ) => {
-  const debouncedGlobalFilter = useDebounce(props.globalFilter);
+  const { searchQuery } = useFilters();
+  const debouncedSearchQuery = useDebounce(searchQuery);
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
-    [props.queryKey, debouncedGlobalFilter],
+    [props.queryKey, debouncedSearchQuery],
     async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
 
       searchParams.set('page', (pageParam + 1).toString());
       searchParams.set('per_page', PER_PAGE.toString());
-      searchParams.set('q', debouncedGlobalFilter || 'Q');
+      searchParams.set('q', debouncedSearchQuery || 'Q');
 
       return await props.queryFn(searchParams);
     },
@@ -66,5 +67,6 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
     ...dataTableQuery,
     data: dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [],
     rowCount: dataTableQuery.data?.pages[0].total_count ?? 0,
+    searchQuery,
   };
 };
