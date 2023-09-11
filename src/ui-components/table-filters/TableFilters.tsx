@@ -17,7 +17,6 @@ function TableFilters() {
   return (
     <Stack
       data-testid='table-filters'
-      px={1}
       py={2}
       flexDirection='row'
       justifyContent='space-between'

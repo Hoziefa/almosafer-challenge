@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 
 import UsersTable from '@components/users-table';
 import ReposTable from '@components/repos-table';
+import TableFilters from '@components/table-filters';
 
 import { useFilters } from '@contexts/FiltersContext';
 
@@ -21,7 +22,13 @@ function GithubTables() {
     };
   }, []);
 
-  return <>{renderedTable[typeFilter]}</>;
+  return (
+    <>
+      <TableFilters />
+
+      {renderedTable[typeFilter]}
+    </>
+  );
 }
 
 export default GithubTables;
