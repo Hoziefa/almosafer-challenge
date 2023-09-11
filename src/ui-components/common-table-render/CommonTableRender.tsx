@@ -4,6 +4,8 @@ import {
   type MaterialReactTableProps,
   type MRT_ColumnDef,
 } from 'material-react-table';
+
+import TableFilters from '@components/table-filters';
 import EmptyHandler from '@components/empty-handler';
 
 export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
@@ -26,7 +28,7 @@ function CommonTableRender<T extends Record<string, any> = {}>(
       positionGlobalFilter='left'
       manualFiltering
       manualSorting
-      enableGlobalFilter={false}
+      enableGlobalFilter
       enableTopToolbar
       enableFilterMatchHighlighting={false}
       enablePagination={false}
@@ -37,6 +39,7 @@ function CommonTableRender<T extends Record<string, any> = {}>(
       enableColumnActions={false}
       enableBottomToolbar={false}
       enableSorting={false}
+      renderTopToolbarCustomActions={() => <TableFilters />}
       renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />
   );
