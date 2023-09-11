@@ -5,3 +5,4 @@ export * from './useUsersQuery';
 export * from './useReposQuery';
 export * from './useForksQuery';
 export * from './useLanguagesQuery';
+export * from './useDebounce';

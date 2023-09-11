@@ -14,7 +14,14 @@ import { useReposQuery } from '@hooks/useReposQuery';
 import type { MRT_ColumnDef } from 'material-react-table';
 import type { Repository } from '@app-types';
 
-function ReposTable(props: { globalFilter: string }) {
+type ReposTableProps = {
+  globalFilter: string;
+  filter: string;
+  setGlobalFilter: Function;
+  setFilter: Function;
+};
+
+function ReposTable(props: ReposTableProps) {
   const {
     data,
     rowCount,
@@ -116,12 +123,15 @@ function ReposTable(props: { globalFilter: string }) {
     return {
       isLoading,
       showProgressBars: isFetching,
-      showGlobalFilter: true,
     };
   }, [isFetching, isLoading]);
 
   return (
     <CommonTableRender
+      globalFilter={props.globalFilter}
+      filter={props.filter}
+      setGlobalFilter={props.setGlobalFilter}
+      setFilter={props.setFilter}
       columns={columns}
       data={data}
       rowCount={rowCount}

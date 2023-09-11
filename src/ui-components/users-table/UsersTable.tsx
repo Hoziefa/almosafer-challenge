@@ -12,7 +12,14 @@ import { useDataTableInfiniteScroll } from '@hooks/useTableInfinitePagination';
 import type { MRT_ColumnDef } from 'material-react-table';
 import type { User } from '@app-types';
 
-function UsersTable(props: { globalFilter: string }) {
+type UsersTableProps = {
+  globalFilter: string;
+  filter: string;
+  setGlobalFilter: Function;
+  setFilter: Function;
+};
+
+function UsersTable(props: UsersTableProps) {
   const {
     data,
     rowCount,
@@ -97,7 +104,6 @@ function UsersTable(props: { globalFilter: string }) {
     return {
       isLoading,
       showProgressBars: isFetching,
-      showGlobalFilter: true,
     };
   }, [isFetching, isLoading]);
 
@@ -112,6 +118,10 @@ function UsersTable(props: { globalFilter: string }) {
 
   return (
     <CommonTableRender
+      globalFilter={props.globalFilter}
+      filter={props.filter}
+      setGlobalFilter={props.setGlobalFilter}
+      setFilter={props.setFilter}
       columns={columns}
       data={data}
       rowCount={rowCount}
