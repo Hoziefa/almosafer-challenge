@@ -60,7 +60,7 @@ function TableFilters() {
               sx={{ cursor: 'pointer' }}
               onClick={() => setSearchQuery('')}
             >
-              <ClearIcon />
+              <ClearIcon titleAccess='Clear Search' />
             </InputAdornment>
           ),
         }}
