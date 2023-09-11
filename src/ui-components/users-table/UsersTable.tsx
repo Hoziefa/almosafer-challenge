@@ -104,7 +104,7 @@ function UsersTable() {
   const containerProps = useMemo(() => {
     return {
       ref: tableContainerRef,
-      sx: { maxHeight: '800px' },
+      sx: { maxHeight: '790px' },
       onScroll: (event: UIEvent<HTMLDivElement>) =>
         onInfinitePagination(event.target as HTMLDivElement),
     };
