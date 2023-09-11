@@ -18,13 +18,13 @@ type Action = {
 };
 
 export type FiltersState = {
-  searchQuery: string;
-  filter: string;
+  queryFilter: string;
+  typeFilter: string;
 };
 
 type FiltersContext = FiltersState & {
-  setSearchQuery: (searchQuery: string) => void;
-  setFilter: (filter: TypeFilter) => void;
+  setQueryFilter: (queryFilter: string) => void;
+  setTypeFilter: (typeFilter: TypeFilter) => void;
 };
 
 const TYPE_FILTER_KEY = 'type';
@@ -32,16 +32,16 @@ const DEFAULT_VALUE = 'users';
 const QUERY_FILTER_KEY = 'query';
 
 const initialState: FiltersState = {
-  filter: DEFAULT_VALUE,
-  searchQuery: '',
+  typeFilter: DEFAULT_VALUE,
+  queryFilter: '',
 };
 
-const reducer = (state: typeof initialState, action: Action) => {
-  if (action.type === TYPE_FILTER_KEY && state.filter !== action.payload)
-    return { ...state, filter: action.payload };
+const reducer = (state: typeof initialState, action: Action): FiltersState => {
+  if (action.type === TYPE_FILTER_KEY && state.typeFilter !== action.payload)
+    return { ...state, typeFilter: action.payload };
 
-  if (action.type === QUERY_FILTER_KEY && state.searchQuery !== action.payload)
-    return { ...state, searchQuery: action.payload };
+  if (action.type === QUERY_FILTER_KEY && state.queryFilter !== action.payload)
+    return { ...state, queryFilter: action.payload };
 
   return state;
 };
@@ -50,35 +50,37 @@ export const FiltersProvider = ({
   children,
   defaultInitialState = {},
 }: React.PropsWithChildren & GenericContext<Partial<FiltersState>>) => {
-  const [{ filter, searchQuery }, dispatch] = useReducer(reducer, {
+  const [{ typeFilter, queryFilter }, dispatch] = useReducer(reducer, {
     ...initialState,
     ...defaultInitialState,
   });
 
   const { queryParams } = useQueryParams({
-    [TYPE_FILTER_KEY]: filter,
-    [QUERY_FILTER_KEY]: searchQuery,
+    [TYPE_FILTER_KEY]: typeFilter,
+    [QUERY_FILTER_KEY]: queryFilter,
   });
 
-  const setSearchQuery = useCallback((searchQuery: string) => {
-    dispatch({ type: QUERY_FILTER_KEY, payload: searchQuery });
+  const setQueryFilter = useCallback((queryFilter: string) => {
+    dispatch({ type: QUERY_FILTER_KEY, payload: queryFilter });
   }, []);
 
-  const setFilter = useCallback((typeFilter: TypeFilter) => {
+  const setTypeFilter = useCallback((typeFilter: TypeFilter) => {
     dispatch({ type: TYPE_FILTER_KEY, payload: typeFilter });
   }, []);
 
   useEffect(() => {
-    setFilter((queryParams[TYPE_FILTER_KEY] as TypeFilter) ?? DEFAULT_VALUE);
-    setSearchQuery(queryParams[QUERY_FILTER_KEY] ?? '');
+    setTypeFilter(
+      (queryParams[TYPE_FILTER_KEY] as TypeFilter) ?? DEFAULT_VALUE,
+    );
+    setQueryFilter(queryParams[QUERY_FILTER_KEY] ?? '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const contextValue = {
-    searchQuery,
-    filter,
-    setSearchQuery,
-    setFilter,
+    queryFilter,
+    typeFilter,
+    setQueryFilter,
+    setTypeFilter,
   };
 
   return (

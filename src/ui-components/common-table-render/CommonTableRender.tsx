@@ -29,7 +29,8 @@ const FILTERS = [
 ];
 
 function TableFilters() {
-  const { searchQuery, filter, setSearchQuery, setFilter } = useFilters();
+  const { queryFilter, typeFilter, setQueryFilter, setTypeFilter } =
+    useFilters();
 
   return (
     <Stack
@@ -44,10 +45,10 @@ function TableFilters() {
         id='search-query'
         size='small'
         variant='outlined'
-        placeholder={`Search ${filter}`}
+        placeholder={`Search ${typeFilter}`}
         sx={{ minWidth: '60%' }}
-        value={searchQuery}
-        onChange={({ target }) => setSearchQuery(target.value)}
+        value={queryFilter}
+        onChange={({ target }) => setQueryFilter(target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>
@@ -58,7 +59,7 @@ function TableFilters() {
             <InputAdornment
               position='end'
               sx={{ cursor: 'pointer' }}
-              onClick={() => setSearchQuery('')}
+              onClick={() => setQueryFilter('')}
             >
               <ClearIcon titleAccess='Clear Search' />
             </InputAdornment>
@@ -72,11 +73,11 @@ function TableFilters() {
         select
         size='small'
         sx={{ minWidth: '30%' }}
-        value={filter}
+        value={typeFilter}
         onChange={({ target }) => {
-          setSearchQuery('');
+          setQueryFilter('');
 
-          setFilter(target.value as any);
+          setTypeFilter(target.value as any);
         }}
       >
         {FILTERS.map((option) => (

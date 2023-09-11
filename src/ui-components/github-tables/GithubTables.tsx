@@ -12,7 +12,7 @@ type RenderedTable = {
 };
 
 function GithubTables() {
-  const { filter } = useFilters();
+  const { typeFilter } = useFilters();
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
@@ -21,7 +21,7 @@ function GithubTables() {
     };
   }, []);
 
-  return <>{renderedTable[filter]}</>;
+  return <>{renderedTable[typeFilter]}</>;
 }
 
 export default GithubTables;

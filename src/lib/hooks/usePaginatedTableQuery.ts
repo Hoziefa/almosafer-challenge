@@ -39,17 +39,17 @@ const PER_PAGE = 10;
 export const usePaginatedTableQuery = <T extends Record<string, any>>(
   props: QueryProps<T>,
 ) => {
-  const { searchQuery } = useFilters();
-  const debouncedSearchQuery = useDebounce(searchQuery);
+  const { queryFilter } = useFilters();
+  const debouncedQueryFilter = useDebounce(queryFilter);
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
-    [props.queryKey, debouncedSearchQuery],
+    [props.queryKey, debouncedQueryFilter],
     async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
 
       searchParams.set('page', (pageParam + 1).toString());
       searchParams.set('per_page', PER_PAGE.toString());
-      searchParams.set('q', debouncedSearchQuery || 'Q');
+      searchParams.set('q', debouncedQueryFilter || 'Q');
 
       return await props.queryFn(searchParams);
     },
@@ -67,6 +67,6 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
     ...dataTableQuery,
     data: dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [],
     rowCount: dataTableQuery.data?.pages[0].total_count ?? 0,
-    searchQuery,
+    queryFilter,
   };
 };

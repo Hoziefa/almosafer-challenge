@@ -23,14 +23,14 @@ function ReposTable() {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-    searchQuery,
+    queryFilter,
   } = useReposQuery();
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const { onInfinitePagination } = useDataTableInfiniteScroll({
     containerRef: tableContainerRef,
-    searchQuery,
+    queryFilter,
     fetchNextPage,
     shouldFetchNextPage: () =>
       !isFetching && !isFetchingNextPage && hasNextPage!,
