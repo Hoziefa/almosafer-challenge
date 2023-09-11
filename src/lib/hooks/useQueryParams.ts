@@ -20,6 +20,8 @@ export const useQueryParams = (filters: { [key: string]: string }) => {
   useEffect(() => {
     const url = new URLSearchParams(filters);
 
+    url.forEach((value, key) => !value && url.delete(key));
+
     router.push(`${pathname}?${url.toString()}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(filters)]);
