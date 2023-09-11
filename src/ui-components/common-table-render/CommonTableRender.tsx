@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import {
   MaterialReactTable,
   MaterialReactTableProps,
@@ -6,7 +6,6 @@ import {
 } from 'material-react-table';
 
 import EmptyHandler from '@components/empty-handler';
-import { useMediaQuery } from '@mui/material';
 
 export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
   MaterialReactTableProps<T>,
@@ -16,22 +15,20 @@ export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
   columns: MRT_ColumnDef<T>[];
   rowCount: number;
   state: object;
-  onGlobalFilterChange: Dispatch<SetStateAction<string>>;
   muiTableContainerProps: object;
 };
 
 function CommonTableRender<T extends Record<string, any> = {}>(
   props: CommonTableRenderProps<T>,
 ) {
-  const isSmScreen = useMediaQuery('(min-width:600px)');
-
   return (
     <MaterialReactTable<T>
       {...props}
       positionGlobalFilter='left'
-      enableGlobalFilter
       manualFiltering
       manualSorting
+      enableGlobalFilter={false}
+      enableTopToolbar={false}
       enableFilterMatchHighlighting={false}
       enablePagination={false}
       enableFullScreenToggle={false}
@@ -41,14 +38,6 @@ function CommonTableRender<T extends Record<string, any> = {}>(
       enableColumnActions={false}
       enableBottomToolbar={false}
       enableSorting={false}
-      muiSearchTextFieldProps={{
-        color: 'info',
-        variant: 'outlined',
-        fullWidth: true,
-        size: 'small',
-        margin: 'dense',
-        sx: { width: isSmScreen ? '510px' : 'auto' },
-      }}
       renderEmptyRowsFallback={() => <EmptyHandler message='Oops! Not Found' />}
     />
   );

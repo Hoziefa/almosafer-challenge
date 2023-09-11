@@ -14,24 +14,22 @@ import { useReposQuery } from '@hooks/useReposQuery';
 import type { MRT_ColumnDef } from 'material-react-table';
 import type { Repository } from '@app-types';
 
-function ReposTable() {
+function ReposTable(props: { globalFilter: string }) {
   const {
     data,
     rowCount,
     isLoading,
     isFetching,
     fetchNextPage,
-    setGlobalFilter,
-    globalFilter,
     isFetchingNextPage,
     hasNextPage,
-  } = useReposQuery();
+  } = useReposQuery(props.globalFilter);
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const { onInfinitePagination } = useDataTableInfiniteScroll({
     containerRef: tableContainerRef,
-    globalFilter,
+    globalFilter: props.globalFilter,
     fetchNextPage,
     shouldFetchNextPage: () =>
       !isFetching && !isFetchingNextPage && hasNextPage!,
@@ -117,11 +115,10 @@ function ReposTable() {
   const tableState = useMemo(() => {
     return {
       isLoading,
-      globalFilter,
       showProgressBars: isFetching,
       showGlobalFilter: true,
     };
-  }, [globalFilter, isFetching, isLoading]);
+  }, [isFetching, isLoading]);
 
   return (
     <CommonTableRender
@@ -129,7 +126,6 @@ function ReposTable() {
       data={data}
       rowCount={rowCount}
       state={tableState}
-      onGlobalFilterChange={setGlobalFilter}
       muiTableContainerProps={containerProps}
     />
   );

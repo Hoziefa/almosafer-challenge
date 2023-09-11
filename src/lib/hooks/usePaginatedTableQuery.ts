@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useInfiniteQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
 
@@ -7,8 +6,6 @@ import {
   MRT_PaginationState,
   MRT_SortingState,
 } from 'material-react-table';
-
-import { useQueryParams } from '@hooks/useQueryParams';
 
 import type { QueryKey } from '@tanstack/query-core';
 import type { Result } from '@app-types';
@@ -32,26 +29,22 @@ export type QueryProps<
     initialData?: () => undefined;
   };
   onError?: (err: Error) => void;
+  globalFilter: string;
 };
 
 const PER_PAGE = 10;
-const FILTER_KEY = 'query';
 
 export const usePaginatedTableQuery = <T extends Record<string, any>>(
   props: QueryProps<T>,
 ) => {
-  const [globalFilter, setGlobalFilter] = useState('');
-
-  useQueryParams(FILTER_KEY, globalFilter, setGlobalFilter);
-
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
-    [props.queryKey, globalFilter],
+    [props.queryKey, props.globalFilter],
     async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
 
       searchParams.set('page', (pageParam + 1).toString());
       searchParams.set('per_page', PER_PAGE.toString());
-      searchParams.set('q', globalFilter || 'Q');
+      searchParams.set('q', props.globalFilter || 'Q');
 
       return await props.queryFn(searchParams);
     },
@@ -69,7 +62,6 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
     ...dataTableQuery,
     data: dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [],
     rowCount: dataTableQuery.data?.pages[0].total_count ?? 0,
-    globalFilter,
-    setGlobalFilter,
+    globalFilter: props.globalFilter,
   };
 };

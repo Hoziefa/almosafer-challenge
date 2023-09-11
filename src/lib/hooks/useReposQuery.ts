@@ -4,10 +4,11 @@ import { ReposHandler } from '@api/handlers/repos';
 import { store } from '@stores/store';
 import { Repository } from '@app-types';
 
-export const useReposQuery = () => {
+export const useReposQuery = (globalFilter: string) => {
   const paginatedDataTableQuery = usePaginatedTableQuery({
     queryFn: ReposHandler.list.request,
     queryKey: ReposHandler.list.queryKey,
+    globalFilter,
     onError: () =>
       store.appStore.onOpen('Something went wrong, please try again later!'),
   });
