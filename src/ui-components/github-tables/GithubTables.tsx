@@ -27,16 +27,10 @@ function GithubTables() {
   const [filter, setFilter] = useState<Filter>('users');
   const [globalFilter, setGlobalFilter] = useState('');
 
-  const { queryValue: queryFilter } = useQueryParams(
-    TYPE_FILTER_KEY,
-    filter,
-    DEFAULT_VALUE,
-  );
-
-  const { queryValue: queryGlobalFilter } = useQueryParams(
-    QUERY_FILTER_KEY,
-    globalFilter,
-  );
+  const { queryParams } = useQueryParams({
+    [TYPE_FILTER_KEY]: filter,
+    [QUERY_FILTER_KEY]: globalFilter,
+  });
 
   const renderedTable = useMemo<RenderedTable>(() => {
     return {
@@ -46,8 +40,8 @@ function GithubTables() {
   }, [globalFilter]);
 
   useEffect(() => {
-    setFilter(queryFilter as Filter);
-    setGlobalFilter(queryGlobalFilter);
+    setFilter((queryParams[TYPE_FILTER_KEY] as Filter) ?? DEFAULT_VALUE);
+    setGlobalFilter(queryParams[QUERY_FILTER_KEY] ?? '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
