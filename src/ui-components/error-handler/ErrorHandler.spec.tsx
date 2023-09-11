@@ -11,6 +11,7 @@ describe('<ErrorHandler /> Tests:', () => {
       message: '',
       onOpen: jest.fn(),
       onClose: jest.fn(),
+      duration: 2000,
       ...props,
     },
   });
