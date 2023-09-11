@@ -28,7 +28,6 @@ function CommonTableRender<T extends Record<string, any> = {}>(
       manualFiltering
       manualSorting
       enableGlobalFilter={false}
-      enableTopToolbar={false}
       enableFilterMatchHighlighting={false}
       enablePagination={false}
       enableFullScreenToggle={false}
