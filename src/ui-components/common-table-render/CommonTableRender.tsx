@@ -42,6 +42,7 @@ function TableFilters(props: TableFiltersProps) {
       flexDirection='row'
       gap={3}
       justifyContent='space-between'
+      width='100%'
     >
       <TextField
         id='search-query'
@@ -101,7 +102,7 @@ function CommonTableRender<T extends Record<string, any> = {}>(
       positionGlobalFilter='left'
       manualFiltering
       manualSorting
-      renderTopToolbar={<TableFilters {...props} />}
+      renderTopToolbarCustomActions={() => <TableFilters {...props} />}
       enableGlobalFilter
       enableTopToolbar
       enableFilterMatchHighlighting={false}
