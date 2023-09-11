@@ -68,7 +68,7 @@ function TableFilters() {
 
       <TextField
         id='select-type'
-        label='Select a type'
+        placeholder='Select a type'
         select
         size='small'
         sx={{ minWidth: '30%' }}
