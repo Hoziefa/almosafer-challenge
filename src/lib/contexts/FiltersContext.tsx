@@ -8,6 +8,8 @@ import React, {
 
 import { useQueryParams } from '@hooks/useQueryParams';
 
+import type { GenericContext } from '@app-types';
+
 type TypeFilter = 'users' | 'repositories';
 
 type Action = {
@@ -15,14 +17,12 @@ type Action = {
   payload: string;
 };
 
-type FiltersState = {
+export type FiltersState = {
   searchQuery: string;
   filter: string;
 };
 
-type FiltersContext = {
-  searchQuery: string;
-  filter: string;
+type FiltersContext = FiltersState & {
   setSearchQuery: (searchQuery: string) => void;
   setFilter: (filter: TypeFilter) => void;
 };
@@ -46,8 +46,14 @@ const reducer = (state: typeof initialState, action: Action) => {
   return state;
 };
 
-export const FiltersProvider = ({ children }: React.PropsWithChildren) => {
-  const [{ filter, searchQuery }, dispatch] = useReducer(reducer, initialState);
+export const FiltersProvider = ({
+  children,
+  defaultInitialState = {},
+}: React.PropsWithChildren & GenericContext<Partial<FiltersState>>) => {
+  const [{ filter, searchQuery }, dispatch] = useReducer(reducer, {
+    ...initialState,
+    ...defaultInitialState,
+  });
 
   const { queryParams } = useQueryParams({
     [TYPE_FILTER_KEY]: filter,
@@ -82,7 +88,7 @@ export const FiltersProvider = ({ children }: React.PropsWithChildren) => {
   );
 };
 
-export const FiltersContext = createContext(initialState as FiltersContext);
+const FiltersContext = createContext(initialState as FiltersContext);
 
 export function useFilters() {
   return useContext(FiltersContext);

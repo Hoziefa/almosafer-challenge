@@ -1,10 +1,14 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { renderWithFilters } from '@test-utils/global-renders';
 
 import CommonTableRender, {
   type CommonTableRenderProps,
 } from './CommonTableRender';
 import type { User } from '@app-types';
+import type { Mock } from 'jest-mock';
 
 describe('<CommonTableRender /> Tests:', () => {
   const props: CommonTableRenderProps<Partial<User>> = {
@@ -32,14 +36,19 @@ describe('<CommonTableRender /> Tests:', () => {
         name: 'test #2',
       },
     ],
-    muiTableContainerProps: {},
     rowCount: 2,
-    state: {
-      globalFilter: '',
-      showGlobalFilter: true,
-    },
+    muiTableContainerProps: {},
+    state: {},
     onGlobalFilterChange: () => {},
   };
+
+  beforeAll(() => {
+    (useSearchParams as Mock).mockReturnValue({
+      get: jest.fn(),
+      entries: () => [],
+    });
+    (useRouter as Mock).mockReturnValue({ push: jest.fn() });
+  });
 
   it('should display the empty-handler when no data is provided or found', () => {
     render(<CommonTableRender {...props} data={[]} />);
@@ -67,19 +76,20 @@ describe('<CommonTableRender /> Tests:', () => {
     expect(screen.getAllByRole('cell')).toHaveLength(4);
   });
 
-  it('should contain the query filter text-field', () => {
+  it('should contain the query-filter & the type-filter fields', () => {
     render(<CommonTableRender {...props} />);
 
-    screen.getByRole('textbox');
+    screen.getByPlaceholderText('Search users');
+    screen.getByDisplayValue('users');
   });
 
   it('should change the query filter text-field value when ever we input a new value', () => {
-    render(<CommonTableRender {...props} />);
+    renderWithFilters(<CommonTableRender {...props} />);
 
-    fireEvent.change(screen.getByRole('textbox'), {
-      target: { value: 'users' },
+    fireEvent.change(screen.getByPlaceholderText('Search users'), {
+      target: { value: 'repos' },
     });
 
-    screen.getByDisplayValue('users');
+    screen.getByDisplayValue('repos');
   });
 });

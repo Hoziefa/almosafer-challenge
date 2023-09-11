@@ -47,7 +47,10 @@ describe('<UsersTable /> Tests:', () => {
     renderWithQuery(<UsersTable />, queryClient);
 
     screen.getByText('Avatar');
-    expect(screen.getByRole('img')).toHaveAttribute('src', 'test-avatar #1');
+    expect(screen.getByRole('img', { name: '' })).toHaveAttribute(
+      'src',
+      'test-avatar #1',
+    );
   });
 
   it('should contain the Name column (label & value)', () => {
