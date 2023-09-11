@@ -1,14 +1,11 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-
-import { renderWithFilters } from '@test-utils/global-renders';
+import { render, screen } from '@testing-library/react';
 
 import CommonTableRender, {
   type CommonTableRenderProps,
 } from './CommonTableRender';
+
 import type { User } from '@app-types';
-import type { Mock } from 'jest-mock';
 
 describe('<CommonTableRender /> Tests:', () => {
   const props: CommonTableRenderProps<Partial<User>> = {
@@ -42,14 +39,6 @@ describe('<CommonTableRender /> Tests:', () => {
     onGlobalFilterChange: () => {},
   };
 
-  beforeAll(() => {
-    (useSearchParams as Mock).mockReturnValue({
-      get: jest.fn(),
-      entries: () => [],
-    });
-    (useRouter as Mock).mockReturnValue({ push: jest.fn() });
-  });
-
   it('should display the empty-handler when no data is provided or found', () => {
     render(<CommonTableRender {...props} data={[]} />);
 
@@ -76,20 +65,9 @@ describe('<CommonTableRender /> Tests:', () => {
     expect(screen.getAllByRole('cell')).toHaveLength(4);
   });
 
-  it('should contain the query-filter & the type-filter fields', () => {
+  it('should integrate with the table-filters', () => {
     render(<CommonTableRender {...props} />);
 
-    screen.getByPlaceholderText('Search users');
-    screen.getByDisplayValue('users');
-  });
-
-  it('should change the query filter text-field value when ever we input a new value', () => {
-    renderWithFilters(<CommonTableRender {...props} />);
-
-    fireEvent.change(screen.getByPlaceholderText('Search users'), {
-      target: { value: 'repos' },
-    });
-
-    screen.getByDisplayValue('repos');
+    screen.getByTestId('table-filters');
   });
 });

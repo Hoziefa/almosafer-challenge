@@ -1,16 +1,12 @@
 import React from 'react';
 import {
   MaterialReactTable,
-  MaterialReactTableProps,
-  MRT_ColumnDef,
+  type MaterialReactTableProps,
+  type MRT_ColumnDef,
 } from 'material-react-table';
 
-import { InputAdornment, MenuItem, Stack, TextField } from '@mui/material';
+import TableFilters from '@components/table-filters';
 import EmptyHandler from '@components/empty-handler';
-
-import { useFilters } from '@contexts/FiltersContext';
-
-import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
 
 export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
   MaterialReactTableProps<T>,
@@ -22,73 +18,6 @@ export type CommonTableRenderProps<T extends Record<string, any> = {}> = Omit<
   state: object;
   muiTableContainerProps: object;
 };
-
-const FILTERS = [
-  { label: 'Users', value: 'users' },
-  { label: 'Repositories', value: 'repositories' },
-];
-
-function TableFilters() {
-  const { queryFilter, typeFilter, setQueryFilter, setTypeFilter } =
-    useFilters();
-
-  return (
-    <Stack
-      px={1}
-      py={2}
-      flexDirection='row'
-      gap={3}
-      justifyContent='space-between'
-      width='100%'
-    >
-      <TextField
-        id='search-query'
-        size='small'
-        variant='outlined'
-        placeholder={`Search ${typeFilter}`}
-        sx={{ minWidth: '60%' }}
-        value={queryFilter}
-        onChange={({ target }) => setQueryFilter(target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <SearchIcon />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment
-              position='end'
-              sx={{ cursor: 'pointer' }}
-              onClick={() => setQueryFilter('')}
-            >
-              <ClearIcon titleAccess='Clear Search' />
-            </InputAdornment>
-          ),
-        }}
-      />
-
-      <TextField
-        id='select-type'
-        placeholder='Select a type'
-        select
-        size='small'
-        sx={{ minWidth: '30%' }}
-        value={typeFilter}
-        onChange={({ target }) => {
-          setQueryFilter('');
-
-          setTypeFilter(target.value as any);
-        }}
-      >
-        {FILTERS.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </Stack>
-  );
-}
 
 function CommonTableRender<T extends Record<string, any> = {}>(
   props: CommonTableRenderProps<T>,

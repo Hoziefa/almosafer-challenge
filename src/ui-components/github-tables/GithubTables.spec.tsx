@@ -17,12 +17,6 @@ describe('<GithubTables /> Tests:', () => {
     (useRouter as Mock).mockReturnValue({ push: jest.fn() });
   });
 
-  it('should contain the types-filter field', () => {
-    renderWithQuery(<GithubTables />, queryClient);
-
-    screen.getByLabelText('Select a type');
-  });
-
   it('should integrate with the table', () => {
     renderWithQuery(<GithubTables />, queryClient);
 
