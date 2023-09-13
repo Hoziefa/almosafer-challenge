@@ -7,7 +7,7 @@ import {
   MRT_SortingState,
 } from 'material-react-table';
 
-import { useFilters } from '@contexts/FiltersContext';
+import { useStore } from '@stores/store';
 import { useDebounce } from '@hooks/useDebounce';
 
 import type { QueryKey } from '@tanstack/query-core';
@@ -39,8 +39,8 @@ const PER_PAGE = 10;
 export const usePaginatedTableQuery = <T extends Record<string, any>>(
   props: QueryProps<T>,
 ) => {
-  const { queryFilter } = useFilters();
-  const debouncedQueryFilter = useDebounce(queryFilter);
+  const { filtersStore } = useStore();
+  const debouncedQueryFilter = useDebounce(filtersStore.queryFilter);
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
     [props.queryKey, debouncedQueryFilter],
@@ -67,6 +67,6 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
     ...dataTableQuery,
     data: dataTableQuery.data?.pages.map(({ items }) => items).flat() ?? [],
     rowCount: dataTableQuery.data?.pages[0].total_count ?? 0,
-    queryFilter,
+    queryFilter: filtersStore.queryFilter,
   };
 };

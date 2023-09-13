@@ -8,10 +8,8 @@ import { store, StoreContext } from '@stores/store';
 
 import { Container, CssBaseline } from '@mui/material';
 
-import { FiltersProvider } from '@contexts/FiltersContext';
-
-import ErrorHandler from '@components/error-handler';
 import RootLayoutHeader from '@components/root-layout-header';
+import ErrorHandler from '@components/error-handler';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,19 +22,17 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <StoreContext.Provider value={store}>
-          <FiltersProvider>
-            <QueryClientProvider client={queryClient}>
-              <CssBaseline />
+          <QueryClientProvider client={queryClient}>
+            <CssBaseline />
 
-              <RootLayoutHeader />
+            <RootLayoutHeader />
 
-              <Container sx={{ my: '5rem' }}>
-                {children}
+            <Container sx={{ my: '5rem' }}>
+              {children}
 
-                <ErrorHandler />
-              </Container>
-            </QueryClientProvider>
-          </FiltersProvider>
+              <ErrorHandler />
+            </Container>
+          </QueryClientProvider>
         </StoreContext.Provider>
       </body>
     </html>

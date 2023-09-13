@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { InputAdornment, MenuItem, Stack, TextField } from '@mui/material';
 
-import { useFilters } from '@contexts/FiltersContext';
+import { observer } from 'mobx-react-lite';
+
+import { useStore } from '@stores/store';
 
 import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
 
@@ -11,8 +13,27 @@ const FILTERS = [
 ];
 
 function TableFilters() {
-  const { queryFilter, typeFilter, setQueryFilter, setTypeFilter } =
-    useFilters();
+  const { filtersStore } = useStore();
+
+  const timeoutRef = useRef(0);
+
+  const [queryFilter, setQueryFilter] = useState(filtersStore.queryFilter);
+
+  useEffect(() => {
+    setQueryFilter(filtersStore.queryFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    timeoutRef.current = window.setTimeout(() => {
+      filtersStore.setQueryFilter(queryFilter);
+    }, 500);
+
+    return () => {
+      window.clearTimeout(timeoutRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryFilter]);
 
   return (
     <Stack
@@ -28,7 +49,7 @@ function TableFilters() {
         id='query-filter'
         size='small'
         variant='outlined'
-        placeholder={`Search ${typeFilter}`}
+        placeholder={`Search ${filtersStore.typeFilter}`}
         sx={{ minWidth: '60%' }}
         value={queryFilter}
         onChange={({ target }) => setQueryFilter(target.value)}
@@ -42,7 +63,7 @@ function TableFilters() {
             <InputAdornment
               position='end'
               sx={{ cursor: 'pointer' }}
-              onClick={() => setQueryFilter('')}
+              onClick={() => filtersStore.setQueryFilter('')}
             >
               <ClearIcon titleAccess='Clear Search' />
             </InputAdornment>
@@ -57,11 +78,11 @@ function TableFilters() {
         select
         size='small'
         sx={{ minWidth: '30%' }}
-        value={typeFilter}
+        value={filtersStore.typeFilter}
         onChange={({ target }) => {
-          setQueryFilter('');
+          filtersStore.setQueryFilter('');
 
-          setTypeFilter(target.value as any);
+          filtersStore.setTypeFilter(target.value as any);
         }}
       >
         {FILTERS.map((option) => (
@@ -74,4 +95,4 @@ function TableFilters() {
   );
 }
 
-export default TableFilters;
+export default observer(TableFilters);
