@@ -8,7 +8,6 @@ import {
 } from 'material-react-table';
 
 import { useStore } from '@stores/store';
-import { useDebounce } from '@hooks/useDebounce';
 
 import type { QueryKey } from '@tanstack/query-core';
 import type { Result } from '@app-types';
@@ -40,16 +39,15 @@ export const usePaginatedTableQuery = <T extends Record<string, any>>(
   props: QueryProps<T>,
 ) => {
   const { filtersStore } = useStore();
-  const debouncedQueryFilter = useDebounce(filtersStore.queryFilter);
 
   const dataTableQuery = useInfiniteQuery<Result<T>, Error>(
-    [props.queryKey, debouncedQueryFilter],
+    [props.queryKey, filtersStore.queryFilter],
     async ({ pageParam = 0 }) => {
       const searchParams = new URLSearchParams();
 
       searchParams.set('page', (pageParam + 1).toString());
       searchParams.set('per_page', PER_PAGE.toString());
-      searchParams.set('q', debouncedQueryFilter || 'Q');
+      searchParams.set('q', filtersStore.queryFilter || 'Q');
 
       return await props.queryFn(searchParams);
     },

@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { InputAdornment, MenuItem, Stack, TextField } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from '@stores/store';
+import { useDebounce } from '@hooks/useDebounce';
 
 import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
 
@@ -15,25 +16,14 @@ const FILTERS = [
 function TableFilters() {
   const { filtersStore } = useStore();
 
-  const timeoutRef = useRef(0);
-
   const [queryFilter, setQueryFilter] = useState(filtersStore.queryFilter);
 
-  useEffect(() => {
-    setQueryFilter(filtersStore.queryFilter);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const debouncedQueryFilter = useDebounce(queryFilter);
 
   useEffect(() => {
-    timeoutRef.current = window.setTimeout(() => {
-      filtersStore.setQueryFilter(queryFilter);
-    }, 500);
-
-    return () => {
-      window.clearTimeout(timeoutRef.current);
-    };
+    filtersStore.setQueryFilter(debouncedQueryFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryFilter]);
+  }, [debouncedQueryFilter]);
 
   return (
     <Stack
