@@ -3,9 +3,6 @@ import { render, type RenderOptions } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { type Store, StoreContext } from '@stores/store';
-import { FiltersProvider, type FiltersState } from '@contexts/FiltersContext';
-
-import type { GenericContext } from '@app-types';
 
 export const renderWithQuery = (
   ui: React.ReactElement,
@@ -18,22 +15,8 @@ export const renderWithQuery = (
   );
 };
 
-export const renderWithStore = (ui: React.ReactElement, store: Store) => {
+export const renderWithStore = (ui: React.ReactElement, store: Partial<Store>) => {
   return render(
-    <StoreContext.Provider value={store}>{ui}</StoreContext.Provider>,
-  );
-};
-
-export const renderWithFilters = (
-  ui: React.ReactElement,
-  options: RenderOptions & GenericContext<Partial<FiltersState>> = {
-    defaultInitialState: {},
-  },
-) => {
-  return render(
-    <FiltersProvider defaultInitialState={options.defaultInitialState}>
-      {ui}
-    </FiltersProvider>,
-    { ...options },
+    <StoreContext.Provider value={store as Store}>{ui}</StoreContext.Provider>,
   );
 };

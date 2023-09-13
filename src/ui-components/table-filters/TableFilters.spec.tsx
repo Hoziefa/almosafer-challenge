@@ -1,18 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { renderWithFilters } from '@test-utils/global-renders';
+import { renderWithStore } from '@test-utils/global-renders';
 
 import TableFilters from './TableFilters';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Mock } from 'jest-mock';
 
 describe('<TableFilters /> Tests:', () => {
-  beforeAll(() => {
-    (useSearchParams as Mock).mockReturnValue({ entries: () => [] });
-    (useRouter as Mock).mockReturnValue({ push: jest.fn() });
-  });
-
   it('should contain the type-filter field', () => {
     render(<TableFilters />);
 
@@ -36,7 +29,14 @@ describe('<TableFilters /> Tests:', () => {
   });
 
   it('should change the query filter text-field value when ever we input a new value', () => {
-    renderWithFilters(<TableFilters />);
+    renderWithStore(<TableFilters />, {
+      filtersStore: {
+        typeFilter: 'users',
+        queryFilter: '',
+        setQueryFilter: jest.fn(),
+        setTypeFilter: jest.fn(),
+      },
+    });
 
     fireEvent.change(screen.getByPlaceholderText('Search users'), {
       target: { value: 'filter by query' },

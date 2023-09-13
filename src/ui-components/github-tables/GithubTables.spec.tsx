@@ -13,7 +13,10 @@ describe('<GithubTables /> Tests:', () => {
   const queryClient = new QueryClient();
 
   beforeAll(() => {
-    (useSearchParams as Mock).mockReturnValue({ get: () => 'users' });
+    (useSearchParams as Mock).mockReturnValue({
+      get: () => 'users',
+      entries: () => [],
+    });
     (useRouter as Mock).mockReturnValue({ push: jest.fn() });
   });
 
