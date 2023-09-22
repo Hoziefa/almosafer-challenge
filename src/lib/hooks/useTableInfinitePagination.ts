@@ -19,7 +19,7 @@ export const useDataTableInfiniteScroll = (
       const { scrollHeight, scrollTop, clientHeight } = containerRef;
 
       if (
-        scrollTop >= scrollHeight - clientHeight &&
+        scrollHeight - scrollTop === clientHeight &&
         props.shouldFetchNextPage()
       ) {
         props.fetchNextPage();
